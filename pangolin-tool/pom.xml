@@ -9,8 +9,10 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.a.b.c.d.pangolin.tool</groupId>
+    <groupId>com.a.b.c.d.pangolin</groupId>
     <artifactId>pangolin-tool</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -20,8 +22,24 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.a.b.c.d.pangolin.util</groupId>
+            <groupId>com.a.b.c.d.pangolin</groupId>
             <artifactId>pangolin-util</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-base</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
@@ -36,4 +54,38 @@
             <artifactId>bootstrapfx-core</artifactId>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <source>21</source>
+                    <target>21</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.8</version>
+                <executions>
+                    <execution>
+                        <!-- Default configuration for running with: mvn clean javafx:run -->
+                        <id>default-cli</id>
+                        <configuration>
+                            <mainClass>com.a.b.c.d.pangolin.tool/com.a.b.c.d.pangolin.tool.Main</mainClass>
+                            <launcher>PangolinToolkit</launcher>
+                            <jlinkZipName>PangolinToolkit</jlinkZipName>
+                            <jlinkImageName>PangolinToolkit</jlinkImageName>
+                            <noManPages>true</noManPages>
+                            <stripDebug>true</stripDebug>
+                            <noHeaderFiles>true</noHeaderFiles>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

@@ -9,8 +9,10 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.a.b.c.d.pangolin.util</groupId>
+    <groupId>com.a.b.c.d.pangolin</groupId>
     <artifactId>pangolin-util</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
