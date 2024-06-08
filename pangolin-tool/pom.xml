@@ -78,13 +78,15 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>com.a.b.c.d.pangolin.tool/com.a.b.c.d.pangolin.tool.Main</mainClass>
+                            <mainClass>com.a.b.c.d.pangolin.tool/com.a.b.c.d.pangolin.tool.MainApplication</mainClass>
                             <launcher>PangolinToolkit</launcher>
                             <jlinkZipName>PangolinToolkit</jlinkZipName>
                             <jlinkImageName>PangolinToolkit</jlinkImageName>
+                            <compress>1</compress>
                             <noManPages>true</noManPages>
                             <stripDebug>true</stripDebug>
                             <noHeaderFiles>true</noHeaderFiles>
+                            <commandlineArgs>-Xms128m -Xmx256m</commandlineArgs>
                         </configuration>
                     </execution>
                 </executions>

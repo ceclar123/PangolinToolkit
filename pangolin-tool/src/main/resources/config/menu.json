@@ -1,0 +1,20 @@
+[
+  {
+    "id": "m1",
+    "name": "编解码",
+    "type": "Menu",
+    "children": [
+      {
+        "id": "m1_1",
+        "name": "Base64",
+        "type": "MenuItem",
+        "fxml": "encode/base64-view.fxml"
+      }
+    ]
+  },
+  {
+    "id": "m2",
+    "name": "加解密",
+    "type": "Menu"
+  }
+]
