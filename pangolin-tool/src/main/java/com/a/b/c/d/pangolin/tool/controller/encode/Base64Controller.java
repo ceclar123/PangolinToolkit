@@ -1,13 +1,14 @@
 package com.a.b.c.d.pangolin.tool.controller.encode;
 
+import com.a.b.c.d.pangolin.tool.util.AlertUtil;
+import com.a.b.c.d.pangolin.util.ExceptionUtil;
+import com.a.b.c.d.pangolin.util.StringUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -29,14 +30,14 @@ public class Base64Controller implements Initializable {
     }
 
     private String getCharsetName() {
-        return StringUtils.defaultIfBlank(cmbCharsetName.getValue(), StandardCharsets.UTF_8.name());
+        return StringUtil.defaultIfBlank(cmbCharsetName.getValue(), StandardCharsets.UTF_8.name());
     }
 
     @FXML
     public void btnBaseEncodeOnAction(ActionEvent event) {
         String input = this.txtFrom.getText();
-        if (StringUtils.isBlank(input)) {
-            this.showAlert(Alert.AlertType.INFORMATION, "提示", "输入内容为空");
+        if (StringUtil.isBlank(input)) {
+            AlertUtil.showAlert(Alert.AlertType.INFORMATION, "提示", "输入内容为空");
             return;
         }
 
@@ -44,15 +45,15 @@ public class Base64Controller implements Initializable {
         try {
             this.txtTo.setText(new String(Base64.getEncoder().encode(input.getBytes(charset)), charset));
         } catch (Exception e) {
-            this.showError(Alert.AlertType.ERROR, "错误", e.getMessage(), ExceptionUtils.getStackTrace(e));
+            AlertUtil.showAlert(Alert.AlertType.ERROR, "错误", e.getMessage(), ExceptionUtil.getStackTrace(e));
         }
     }
 
     @FXML
     public void btnBaseDecodeOnAction(ActionEvent event) {
         String input = this.txtFrom.getText();
-        if (StringUtils.isBlank(input)) {
-            this.showAlert(Alert.AlertType.INFORMATION, "提示", "输入内容为空");
+        if (StringUtil.isBlank(input)) {
+            AlertUtil.showAlert(Alert.AlertType.INFORMATION, "提示", "输入内容为空");
             return;
         }
 
@@ -60,15 +61,15 @@ public class Base64Controller implements Initializable {
         try {
             this.txtTo.setText(new String(Base64.getDecoder().decode(input.getBytes(charset)), charset));
         } catch (Exception e) {
-            this.showError(Alert.AlertType.ERROR, "错误", e.getMessage(), ExceptionUtils.getStackTrace(e));
+            AlertUtil.showAlert(Alert.AlertType.ERROR, "错误", e.getMessage(), ExceptionUtil.getStackTrace(e));
         }
     }
 
     @FXML
     public void btnUrlEncodeOnAction(ActionEvent event) {
         String input = this.txtFrom.getText();
-        if (StringUtils.isBlank(input)) {
-            this.showAlert(Alert.AlertType.INFORMATION, "提示", "输入内容为空");
+        if (StringUtil.isBlank(input)) {
+            AlertUtil.showAlert(Alert.AlertType.INFORMATION, "提示", "输入内容为空");
             return;
         }
 
@@ -76,15 +77,15 @@ public class Base64Controller implements Initializable {
         try {
             this.txtTo.setText(new String(Base64.getUrlEncoder().encode(input.getBytes(charset)), charset));
         } catch (Exception e) {
-            this.showError(Alert.AlertType.ERROR, "错误", e.getMessage(), ExceptionUtils.getStackTrace(e));
+            AlertUtil.showAlert(Alert.AlertType.ERROR, "错误", e.getMessage(), ExceptionUtil.getStackTrace(e));
         }
     }
 
     @FXML
     public void btnUrlDecodeOnAction(ActionEvent event) {
         String input = this.txtFrom.getText();
-        if (StringUtils.isBlank(input)) {
-            this.showAlert(Alert.AlertType.INFORMATION, "提示", "输入内容为空");
+        if (StringUtil.isBlank(input)) {
+            AlertUtil.showAlert(Alert.AlertType.INFORMATION, "提示", "输入内容为空");
             return;
         }
 
@@ -92,15 +93,15 @@ public class Base64Controller implements Initializable {
         try {
             this.txtTo.setText(new String(Base64.getUrlDecoder().decode(input.getBytes(charset)), charset));
         } catch (Exception e) {
-            this.showError(Alert.AlertType.ERROR, "错误", e.getMessage(), ExceptionUtils.getStackTrace(e));
+            AlertUtil.showAlert(Alert.AlertType.ERROR, "错误", e.getMessage(), ExceptionUtil.getStackTrace(e));
         }
     }
 
     @FXML
     public void btnMimeEncodeOnAction(ActionEvent event) {
         String input = this.txtFrom.getText();
-        if (StringUtils.isBlank(input)) {
-            this.showAlert(Alert.AlertType.INFORMATION, "提示", "输入内容为空");
+        if (StringUtil.isBlank(input)) {
+            AlertUtil.showAlert(Alert.AlertType.INFORMATION, "提示", "输入内容为空");
             return;
         }
 
@@ -108,15 +109,15 @@ public class Base64Controller implements Initializable {
         try {
             this.txtTo.setText(new String(Base64.getMimeEncoder().encode(input.getBytes(charset)), charset));
         } catch (Exception e) {
-            this.showError(Alert.AlertType.ERROR, "错误", e.getMessage(), ExceptionUtils.getStackTrace(e));
+            AlertUtil.showAlert(Alert.AlertType.ERROR, "错误", e.getMessage(), ExceptionUtil.getStackTrace(e));
         }
     }
 
     @FXML
     public void btnMimeDecodeOnAction(ActionEvent event) {
         String input = this.txtFrom.getText();
-        if (StringUtils.isBlank(input)) {
-            this.showAlert(Alert.AlertType.INFORMATION, "提示", "输入内容为空");
+        if (StringUtil.isBlank(input)) {
+            AlertUtil.showAlert(Alert.AlertType.INFORMATION, "提示", "输入内容为空");
             return;
         }
 
@@ -124,28 +125,8 @@ public class Base64Controller implements Initializable {
         try {
             this.txtTo.setText(new String(Base64.getMimeDecoder().decode(input.getBytes(charset)), charset));
         } catch (Exception e) {
-            this.showError(Alert.AlertType.ERROR, "错误", e.getMessage(), ExceptionUtils.getStackTrace(e));
+            AlertUtil.showAlert(Alert.AlertType.ERROR, "错误", e.getMessage(), ExceptionUtil.getStackTrace(e));
         }
     }
 
-    private void showAlert(Alert.AlertType alertType, String title, String content) {
-        Alert alert = new Alert(alertType);
-        alert.setHeaderText(title);
-        alert.setContentText(content);
-        alert.show();
-    }
-
-    private void showError(Alert.AlertType alertType, String title, String content, String detail) {
-        Alert alert = new Alert(alertType);
-        alert.setHeaderText(title);
-        alert.setContentText(content);
-
-        TextArea textArea = new TextArea(detail);
-        textArea.setEditable(false);
-        textArea.setWrapText(true);
-        textArea.setMaxWidth(Double.MAX_VALUE);
-        textArea.setMaxHeight(Double.MAX_VALUE);
-        alert.getDialogPane().setExpandableContent(textArea);
-        alert.show();
-    }
 }

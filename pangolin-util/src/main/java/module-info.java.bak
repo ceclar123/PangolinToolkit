@@ -1,0 +1,10 @@
+module pangolin.util {
+    requires org.apache.commons.lang3;
+    requires org.apache.commons.io;
+    requires snappy.java;
+    requires com.alibaba.fastjson2;
+
+    opens com.a.b.c.d.pangolin.util to javafx.fxml;
+    exports com.a.b.c.d.pangolin.util;
+    exports com.a.b.c.d.pangolin.util.bean;
+}

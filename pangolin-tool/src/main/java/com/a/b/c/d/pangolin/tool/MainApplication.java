@@ -9,11 +9,14 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
-public class MainApplication extends Application {
+public class MainApplication  extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        Application.setUserAgentStylesheet(STYLESHEET_CASPIAN);
+        Application.setUserAgentStylesheet(STYLESHEET_MODENA);
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("main-view.fxml"));
 
         // 主屏宽高
@@ -27,12 +30,19 @@ public class MainApplication extends Application {
         stage.setTitle("PangolinToolkit");
         stage.setMinWidth(width);
         stage.setMinHeight(height);
-        stage.getIcons().add(new Image(MainApplication.class.getResourceAsStream("/img/pangolin.png")));
+        stage.getIcons().addAll(this.getIconList());
 
         stage.show();
     }
 
     public static void main(String[] args) {
         launch();
+    }
+
+    private List<Image> getIconList() {
+        return Arrays.asList(16, 32, 48, 64, 128, 256).stream()
+                .map(it -> {
+                    return new Image(MainApplication.class.getResourceAsStream("/img/pangolin_" + it + ".png"));
+                }).collect(Collectors.toList());
     }
 }

@@ -1,17 +1,11 @@
 package com.a.b.c.d.pangolin.tool.util;
 
 import com.a.b.c.d.pangolin.tool.MainApplication;
-import com.a.b.c.d.pangolin.util.CollectionUtils;
-import com.a.b.c.d.pangolin.util.FunctionUtil;
-import com.a.b.c.d.pangolin.util.Lists;
+import com.a.b.c.d.pangolin.util.*;
 import com.a.b.c.d.pangolin.util.bean.MenuConfigDTO;
-import com.alibaba.fastjson2.JSON;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -30,29 +24,27 @@ public class MenuConfigUtil {
     private MenuBar menuBar;
     private TabPane tabPane;
     private TextArea txtMsg;
-    private Class baseClass;
     private List<MenuConfigDTO> list;
 
     private MenuConfigUtil() {
     }
 
-    public static MenuConfigUtil build(MenuBar menuBar, TabPane tabPane, TextArea txtMsg, Class baseClass) {
+    public static MenuConfigUtil build(MenuBar menuBar, TabPane tabPane, TextArea txtMsg) {
         MenuConfigUtil util = new MenuConfigUtil();
         util.menuBar = menuBar;
         util.tabPane = tabPane;
         util.txtMsg = txtMsg;
-        util.baseClass = baseClass;
         return util;
     }
 
     public void initMenu(InputStream is) {
         String json = null;
         try {
-            json = IOUtils.toString(is, StandardCharsets.UTF_8);
+            json = IOUtil.toString(is, StandardCharsets.UTF_8);
         } catch (Exception e) {
-            this.txtMsg.appendText(ExceptionUtils.getStackTrace(e));
+            this.txtMsg.appendText(ExceptionUtil.getStackTrace(e));
         }
-        this.list = JSON.parseArray(json, MenuConfigDTO.class);
+        this.list = JsonUtil.parseArray(json, MenuConfigDTO.class);
 
         if (CollectionUtils.isEmpty(list)) {
             return;
@@ -68,7 +60,7 @@ public class MenuConfigUtil {
 
 
     private String convertMenuId2TabId(String menuId) {
-        return StringUtils.replace(menuId, PREFIX_MENU_ID, PREFIX_TAB_ID);
+        return StringUtil.replace(menuId, PREFIX_MENU_ID, PREFIX_TAB_ID);
     }
 
     private Menu parseMenu(MenuConfigDTO item) {
@@ -98,8 +90,11 @@ public class MenuConfigUtil {
         if (Objects.isNull(item)) {
             return null;
         }
-
-        if (TYPE_MENU.equalsIgnoreCase(item.getType())) {
+        if (TYPE_SEPARATOR_MENU_ITEM.equalsIgnoreCase(item.getType())) {
+            SeparatorMenuItem menu = new SeparatorMenuItem();
+            menu.setId(PREFIX_MENU_ID + item.getId());
+            return menu;
+        } else if (TYPE_MENU.equalsIgnoreCase(item.getType())) {
             Menu menu = new Menu(item.getName());
             menu.setId(PREFIX_MENU_ID + item.getId());
             menu.getItems().setAll(parseMenuItem(item.getChildren()));
@@ -107,6 +102,7 @@ public class MenuConfigUtil {
         } else if (TYPE_MENU_ITEM.equalsIgnoreCase(item.getType())) {
             MenuItem menu = new MenuItem(item.getName());
             menu.setId(PREFIX_MENU_ID + item.getId());
+            menu.setUserData(item.getFxml());
             menu.setOnAction((event) -> {
                 Object source = event.getSource();
                 if (source instanceof MenuItem) {
@@ -133,16 +129,18 @@ public class MenuConfigUtil {
                 Tab tab = new Tab();
                 tab.setId(tabId);
                 tab.setText(source.getText());
-                FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("encode/base64-view.fxml"));
-                Node node = fxmlLoader.load();
-                tab.setContent(node);
+                if (Objects.nonNull(source.getUserData())) {
+                    FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource(source.getUserData().toString()));
+                    Node node = fxmlLoader.load();
+                    node.prefWidth(tabPane.getWidth());
+                    node.prefHeight(tabPane.getHeight());
+                    tab.setContent(node);
+                }
                 tabPane.getTabs().add(tab);
                 tabPane.getSelectionModel().select(tab);
-                node.prefWidth(tabPane.getWidth());
-                node.prefHeight(tabPane.getHeight());
 
             } catch (Exception e) {
-                this.txtMsg.appendText(ExceptionUtils.getStackTrace(e));
+                this.txtMsg.appendText(ExceptionUtil.getStackTrace(e));
             }
         }
     }

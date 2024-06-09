@@ -19,6 +19,6 @@
     <right>
     </right>
     <bottom>
-        <TextArea fx:id="txtMsg" BorderPane.alignment="TOP_LEFT" prefHeight="1" wrapText="true"/>
+        <TextArea fx:id="txtMsg" BorderPane.alignment="TOP_LEFT" prefHeight="60" wrapText="true" visible="false"/>
     </bottom>
 </BorderPane>

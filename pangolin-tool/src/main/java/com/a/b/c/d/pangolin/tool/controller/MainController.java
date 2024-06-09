@@ -1,6 +1,5 @@
 package com.a.b.c.d.pangolin.tool.controller;
 
-import com.a.b.c.d.pangolin.tool.MainApplication;
 import com.a.b.c.d.pangolin.tool.util.MenuConfigUtil;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -23,6 +22,6 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        MenuConfigUtil.build(menuBar, tabPane, txtMsg, MainApplication.class).initMenu(MainController.class.getResourceAsStream("/config/menu.json"));
+        MenuConfigUtil.build(menuBar, tabPane, txtMsg).initMenu(MainController.class.getResourceAsStream("/config/menu.json"));
     }
 }

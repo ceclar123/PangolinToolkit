@@ -9,6 +9,28 @@
         "name": "Base64",
         "type": "MenuItem",
         "fxml": "encode/base64-view.fxml"
+      },
+      {
+        "id": "m1_2",
+        "type": "SeparatorMenuItem"
+      },
+      {
+        "id": "m1_3",
+        "name": "Gzip",
+        "type": "MenuItem",
+        "fxml": "encode/gzip-view.fxml"
+      },
+      {
+        "id": "m1_4",
+        "name": "Deflate",
+        "type": "MenuItem",
+        "fxml": "encode/deflate-view.fxml"
+      },
+      {
+        "id": "m1_5",
+        "name": "Snappy",
+        "type": "MenuItem",
+        "fxml": "encode/snappy-view.fxml"
       }
     ]
   },
