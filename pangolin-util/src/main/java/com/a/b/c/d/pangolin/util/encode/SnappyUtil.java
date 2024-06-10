@@ -1,4 +1,4 @@
-package com.a.b.c.d.pangolin.util;
+package com.a.b.c.d.pangolin.util.encode;
 
 import org.xerial.snappy.Snappy;
 

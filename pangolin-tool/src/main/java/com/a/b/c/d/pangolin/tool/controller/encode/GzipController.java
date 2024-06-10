@@ -2,7 +2,7 @@ package com.a.b.c.d.pangolin.tool.controller.encode;
 
 import com.a.b.c.d.pangolin.tool.util.AlertUtil;
 import com.a.b.c.d.pangolin.util.ExceptionUtil;
-import com.a.b.c.d.pangolin.util.GzipUtil;
+import com.a.b.c.d.pangolin.util.encode.GzipUtil;
 import com.a.b.c.d.pangolin.util.StringUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

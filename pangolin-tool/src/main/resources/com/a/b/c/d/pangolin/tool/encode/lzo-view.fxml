@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<GridPane fx:id="gridPane" prefHeight="600" prefWidth="800"
+          xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="com.a.b.c.d.pangolin.tool.controller.encode.LzoController">
+    <columnConstraints>
+        <ColumnConstraints percentWidth="100"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints percentHeight="50"/>
+        <RowConstraints prefHeight="40"/>
+        <RowConstraints percentHeight="50"/>
+    </rowConstraints>
+    <children>
+        <TextArea fx:id="txtFrom" prefWidth="${gridPane.width}" wrapText="true" GridPane.columnIndex="0"
+                  GridPane.rowIndex="0"/>
+        <FlowPane alignment="CENTER_LEFT" prefWidth="${gridPane.width}" GridPane.columnIndex="0" GridPane.rowIndex="1">
+            <Button fx:id="btnEncode" onAction="#btnEncodeOnAction" text="编码"/>
+            <Button fx:id="btnDecode" onAction="#btnDecodeOnAction" text="解码"/>
+            <ComboBox fx:id="cmbCharsetName" prefWidth="150.0"/>
+        </FlowPane>
+        <TextArea fx:id="txtTo" prefWidth="${gridPane.width}" wrapText="true" GridPane.columnIndex="0"
+                  GridPane.rowIndex="2"/>
+    </children>
+</GridPane>

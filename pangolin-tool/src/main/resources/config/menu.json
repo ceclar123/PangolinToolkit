@@ -22,21 +22,69 @@
       },
       {
         "id": "m1_4",
+        "name": "Zip",
+        "type": "MenuItem",
+        "fxml": "encode/zip-view.fxml"
+      },
+      {
+        "id": "m1_5",
         "name": "Deflate",
         "type": "MenuItem",
         "fxml": "encode/deflate-view.fxml"
       },
       {
-        "id": "m1_5",
+        "id": "m1_6",
         "name": "Snappy",
         "type": "MenuItem",
         "fxml": "encode/snappy-view.fxml"
+      },
+      {
+        "id": "m1_7",
+        "name": "Lz4",
+        "type": "MenuItem",
+        "fxml": "encode/lz4-view.fxml"
+      },
+      {
+        "id": "m1_8",
+        "name": "Lzo",
+        "type": "MenuItem",
+        "fxml": "encode/lzo-view.fxml"
+      },
+      {
+        "id": "m1_9",
+        "name": "Zstd",
+        "type": "MenuItem",
+        "fxml": "encode/zstd-view.fxml"
+      },
+      {
+        "id": "m1_10",
+        "name": "BZip2",
+        "type": "MenuItem",
+        "fxml": "encode/bzip2-view.fxml"
+      },
+      {
+        "id": "m1_11",
+        "name": "Lzma",
+        "type": "MenuItem",
+        "fxml": "encode/lzma-view.fxml"
+      },
+      {
+        "id": "m1_12",
+        "name": "Pack200",
+        "type": "MenuItem",
+        "fxml": "encode/pack200-view.fxml"
+      },
+      {
+        "id": "m1_13",
+        "name": "XZ",
+        "type": "MenuItem",
+        "fxml": "encode/xz-view.fxml"
       }
     ]
   },
   {
     "id": "m2",
-    "name": "加解密",
+    "name": "JSON工具",
     "type": "Menu"
   }
 ]

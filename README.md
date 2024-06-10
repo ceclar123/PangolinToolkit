@@ -12,12 +12,16 @@ mvn clean compile install -U -D maven.test.skip=true
 
 ## package to *.zip
 
+> 模块化,暂时用不了
+
 ```
 cd pangolin-tool
 mvn clean javafx:jlink -U -D maven.test.skip=true
 ```
 
 ## 生成exe文件
+
+> 非模块化，结果文件有点大
 
 ```
 cd pangolin-tool

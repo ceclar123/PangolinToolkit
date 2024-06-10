@@ -1,9 +1,9 @@
 package com.a.b.c.d.pangolin.tool.controller.encode;
 
 import com.a.b.c.d.pangolin.tool.util.AlertUtil;
-import com.a.b.c.d.pangolin.util.encode.DeflateUtil;
 import com.a.b.c.d.pangolin.util.ExceptionUtil;
 import com.a.b.c.d.pangolin.util.StringUtil;
+import com.a.b.c.d.pangolin.util.encode.LzoUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,7 +16,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.ResourceBundle;
 
-public class DeflateController implements Initializable {
+public class LzoController implements Initializable {
     @FXML
     private TextArea txtFrom;
     @FXML
@@ -44,7 +44,7 @@ public class DeflateController implements Initializable {
 
         String charset = this.getCharsetName();
         try {
-            this.txtTo.setText(new String(Base64.getEncoder().encode(DeflateUtil.compress(input.getBytes(charset))), charset));
+            this.txtTo.setText(new String(Base64.getEncoder().encode(LzoUtil.compress(input.getBytes(charset))), charset));
         } catch (Exception e) {
             AlertUtil.showAlert(Alert.AlertType.ERROR, "错误", e.getMessage(), ExceptionUtil.getStackTrace(e));
         }
@@ -60,7 +60,7 @@ public class DeflateController implements Initializable {
 
         String charset = this.getCharsetName();
         try {
-            this.txtTo.setText(new String(DeflateUtil.decompress(Base64.getDecoder().decode(input.getBytes(charset))), charset));
+            this.txtTo.setText(new String(LzoUtil.decompress(Base64.getDecoder().decode(input.getBytes(charset))), charset));
         } catch (Exception e) {
             AlertUtil.showAlert(Alert.AlertType.ERROR, "错误", e.getMessage(), ExceptionUtil.getStackTrace(e));
         }
