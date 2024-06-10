@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<BorderPane fx:id="borderPane" prefHeight="600" prefWidth="800" xmlns="http://javafx.com/javafx/17.0.2-ea"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.a.b.c.d.pangolin.tool.controller.json.FormatController">
+    <center>
+        <TextArea fx:id="txtFrom" prefWidth="${borderPane.width}" wrapText="true"/>
+    </center>
+    <bottom>
+        <FlowPane alignment="CENTER_LEFT" prefWidth="${borderPane.width}" BorderPane.alignment="CENTER_LEFT"
+                  prefHeight="50">
+            <Button fx:id="btnFormatPretty" onAction="#btnFormatPrettyOnAction" text="格式化"/>
+            <Button fx:id="btnFormatCompress" onAction="#btnFormatCompressOnAction" text="压缩"/>
+            <Button fx:id="btnFormatAddEscape" onAction="#btnFormatAddEscapeOnAction" text="转义"/>
+            <Button fx:id="btnFormatRemoveEscape" onAction="#btnFormatRemoveEscapeOnAction" text="去除转义"/>
+        </FlowPane>
+    </bottom>
+</BorderPane>

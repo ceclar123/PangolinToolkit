@@ -85,6 +85,14 @@
   {
     "id": "m2",
     "name": "JSON工具",
-    "type": "Menu"
+    "type": "Menu",
+    "children": [
+      {
+        "id": "m2_1",
+        "name": "JSON格式化",
+        "type": "MenuItem",
+        "fxml": "json/format-view.fxml"
+      }
+    ]
   }
 ]
