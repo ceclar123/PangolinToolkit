@@ -94,5 +94,18 @@
         "fxml": "json/format-view.fxml"
       }
     ]
+  },
+  {
+    "id": "m3",
+    "name": "加解密",
+    "type": "Menu",
+    "children": [
+      {
+        "id": "m3_1",
+        "name": "AES",
+        "type": "MenuItem",
+        "fxml": "crypto/aes-view.fxml"
+      }
+    ]
   }
 ]
