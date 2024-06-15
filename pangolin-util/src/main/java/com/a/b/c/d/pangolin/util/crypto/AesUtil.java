@@ -1,146 +1,110 @@
 package com.a.b.c.d.pangolin.util.crypto;
 
 import javax.crypto.Cipher;
+import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class AesUtil {
     /**
-     * 加密模式之 ECB，算法/模式/补码方式
-     * <pre>
-     *     在ECB模式中，每一个块独立加密，相同的明文块会被加密成相同的密文块。这带来的一个主要缺点是，它不能很好地隐藏数据模式。因此，对于大多数应用而言，ECB模式不推荐使用
-     *     1、密钥长度128位、192位、256位
-     * </pre>
-     */
-    public static final String AES_ECB = "AES/ECB/PKCS5Padding";
-
-    /**
-     * 加密模式之 CBC，算法/模式/补码方式
-     * <pre>
-     *     CBC模式是一种操作模式，它使用一个固定长度的初始向量（IV），并要求每个明文块在加密之前与前一个密文块的输出进行异或操作。第一个明文块与初始向量进行异或。这种方法增加了加密数据的复杂性和安全性，因为相同的明文块不会被加密为相同的密文块。
-     *     1、密钥长度128位、192位、256位
-     *     2、初始向量16字节
-     * </pre>
-     */
-    public static final String AES_CBC = "AES/CBC/PKCS5Padding";
-
-    /**
-     * 加密模式之 CFB，算法/模式/补码方式
-     * <pre>
-     *     CFB模式将AES变成一种流密码，使得它可以在加密数据时不需要填充（padding），因为它可以工作在任何长度的数据上。此外，它在加密每个比特或者字节前，利用上一个步骤的加密结果作为反馈。
-     *     1、密钥长度128位、192位、256位
-     *     2、初始向量16字节
-     * </pre>
-     */
-    public static final String AES_CFB = "AES/CFB/PKCS5Padding";
-    /**
      * AES 中的 IV 必须是 16 字节（128位）长
      */
-    public static final Integer IV_LENGTH = 16;
+    public static final Integer IV_LENGTH_12 = 12;
+    public static final Integer IV_LENGTH_16 = 16;
 
     public static final String BASE_STRING = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-    public static final List<String> MODE_LIST = Arrays.asList(
-            "AES/CBC/NoPadding",
-            "AES/CBC/PKCS5Padding",
-            "AES/CBC/ISO10126Padding",
-            "AES/CFB/NoPadding",
-            "AES/CFB/PKCS5Padding",
-            "AES/CFB/ISO10126Padding",
-            "AES/ECB/NoPadding",
-            "AES/ECB/PKCS5Padding",
-            "AES/ECB/ISO10126Padding",
-            "AES/OFB/NoPadding",
-            "AES/OFB/PKCS5Padding",
-            "AES/OFB/ISO10126Padding",
-            "AES/PCBC/NoPadding",
-            "AES/PCBC/PKCS5Padding",
-            "AES/PCBC/ISO10126Padding",
-            "AES/CTR/NoPadding",
-            "AES/CTR/PKCS5Padding",
-            "AES/CTR/ISO10126Padding"
-    );
+    /**
+     * CBC模式，每个明文块在加密之前与前一个密文块的输出进行异或操作。第一个明文块与初始向量进行异或
+     * <pre>
+     *     1、密钥长度128位、192位、256位
+     *     2、初始向量16字节
+     * </pre>
+     */
+    public static final List<String> SYS_MODE_LIST_CBC = Arrays.asList("AES/CBC/NoPadding", "AES/CBC/PKCS5Padding", "AES/CBC/ISO10126Padding");
+    /**
+     * CFB模式，每个明文块在加密之前与前一个密文块的输出进行异或操作。第一个明文块与初始向量进行异或
+     * <pre>
+     *     1、密钥长度128位、192位、256位
+     *     2、初始向量16字节
+     * </pre>
+     */
+    public static final List<String> SYS_MODE_LIST_CFB = Arrays.asList("AES/CFB/NoPadding", "AES/CFB/PKCS5Padding", "AES/CFB/ISO10126Padding");
+    /**
+     * ECB模式，明文被分割成相同大小(通常16字节)的快，每个块用相同的密钥进行加密
+     * <pre>     *
+     *     1、密钥长度128位、192位、256位
+     * </pre>
+     */
+    public static final List<String> SYS_MODE_LIST_ECB = Arrays.asList("AES/ECB/NoPadding", "AES/ECB/PKCS5Padding", "AES/ECB/ISO10126Padding");
+    /**
+     * OFB模式，不直接加密数据，而是生成密钥流，密钥流与明文数据进行异或操作生成密文
+     * <pre>
+     *     1、密钥长度128位、192位、256位
+     *     2、初始向量16字节
+     * </pre>
+     */
+    public static final List<String> SYS_MODE_LIST_OFB = Arrays.asList("AES/OFB/NoPadding", "AES/OFB/PKCS5Padding", "AES/OFB/ISO10126Padding");
+    /**
+     * PCBC模式，每个明文块在加密之前与前一个密文块的输出进行异或操作。第一个明文块与初始向量进行异或，同时当前密文计算的时候还会加入当前明文的值，由于其复杂的错误传播特性，在实际中很少使用，推荐使用CBC、CTR等模式
+     * <pre>
+     *     1、密钥长度128位、192位、256位
+     *     2、初始向量16字节
+     * </pre>
+     */
+    public static final List<String> SYS_MODE_LIST_PCBC = Arrays.asList("AES/PCBC/NoPadding", "AES/PCBC/PKCS5Padding", "AES/PCBC/ISO10126Padding");
+    /**
+     * CTR模式，通过将一个计数器与初始向量IV相结合，并使用AES算法对这个结合加密，生成密钥流，将密钥流与明文进行异或操作得到密文
+     * <pre>
+     *     1、密钥长度128位、192位、256位
+     *     2、初始向量16字节
+     * </pre>
+     */
+    public static final List<String> SYS_MODE_LIST_CTR = Arrays.asList("AES/CTR/NoPadding", "AES/CTR/PKCS5Padding", "AES/CTR/ISO10126Padding");
+    /**
+     * GCM模式，结合了加密与认证，既提供了保密性，又提供了完整性，先生成密钥流(类似CTR模式)，同时利用Galois域乘法和一个散列函数来生成一个认证tag，利用这个tag来验证数据完整性与真实性
+     * <pre>
+     *     1、密钥长度128位、192位、256位（也是tag长度）
+     *     2、初始向量12字节
+     * </pre>
+     */
+    public static final List<String> SYS_MODE_LIST_GCM = Arrays.asList("AES/GCM/NoPadding", "AES/GCM/PKCS5Padding", "AES/GCM/ISO10126Padding");
+
+    public static final List<String> SYS_MODE_LIST = Stream.of(SYS_MODE_LIST_CBC, SYS_MODE_LIST_CFB, SYS_MODE_LIST_ECB, SYS_MODE_LIST_OFB, SYS_MODE_LIST_PCBC, SYS_MODE_LIST_CTR, SYS_MODE_LIST_GCM)
+            .flatMap(Collection::stream)
+            .collect(Collectors.toList());
 
     private AesUtil() {
     }
 
-    public static byte[] encryptECB(byte[] input, byte[] key) throws Exception {
-        Cipher cipher = Cipher.getInstance(AES_ECB);
-        cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key, "AES"));
-        return cipher.doFinal(input);
-    }
-
-    public static byte[] decryptECB(byte[] input, byte[] key) throws Exception {
-        Cipher cipher = Cipher.getInstance(AES_ECB);
-        cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key, "AES"));
-        return cipher.doFinal(input);
-    }
-
-    public static byte[] encryptCBC(byte[] input, byte[] key, byte[] iv) throws Exception {
-        Cipher cipher = Cipher.getInstance(AES_CBC);
-        cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv));
-        return cipher.doFinal(input);
-    }
-
-    public static byte[] decryptCBC(byte[] input, byte[] key, byte[] iv) throws Exception {
-        Cipher cipher = Cipher.getInstance(AES_CBC);
-        cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv));
-        return cipher.doFinal(input);
-    }
-
-    public static byte[] encryptCFB(byte[] input, byte[] key, byte[] iv) throws Exception {
-        Cipher cipher = Cipher.getInstance(AES_CFB);
-        cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv));
-        return cipher.doFinal(input);
-    }
-
-    public static byte[] decryptCFB(byte[] input, byte[] key, byte[] iv) throws Exception {
-        Cipher cipher = Cipher.getInstance(AES_CFB);
-        cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv));
-        return cipher.doFinal(input);
-    }
-
     public static byte[] encrypt(String mode, byte[] input, byte[] key, byte[] iv) throws Exception {
-        byte[] data;
-        switch (mode) {
-            case AES_ECB:
-                data = encryptECB(input, key);
-                break;
-            case AES_CBC:
-                data = encryptCBC(input, key, iv);
-                break;
-            case AES_CFB:
-                data = encryptCFB(input, key, iv);
-                break;
-            default:
-                data = new byte[0];
-                break;
+        Cipher cipher = Cipher.getInstance(mode);
+        if (SYS_MODE_LIST_ECB.contains(mode)) {
+            cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key, "AES"));
+        } else if (SYS_MODE_LIST_GCM.contains(mode)) {
+            cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key, "AES"), new GCMParameterSpec(key.length * 8, iv));
+        } else {
+            cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv));
         }
-
-        return data;
+        return cipher.doFinal(input);
     }
 
     public static byte[] decrypt(String mode, byte[] input, byte[] key, byte[] iv) throws Exception {
-        byte[] data;
-        switch (mode) {
-            case AES_ECB:
-                data = decryptECB(input, key);
-                break;
-            case AES_CBC:
-                data = decryptCBC(input, key, iv);
-                break;
-            case AES_CFB:
-                data = decryptCFB(input, key, iv);
-                break;
-            default:
-                data = new byte[0];
-                break;
+        Cipher cipher = Cipher.getInstance(mode);
+        if (SYS_MODE_LIST_ECB.contains(mode)) {
+            cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key, "AES"));
+        } else if (SYS_MODE_LIST_GCM.contains(mode)) {
+            cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key, "AES"), new GCMParameterSpec(key.length * 8, iv));
+        } else {
+            cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv));
         }
-
-        return data;
+        return cipher.doFinal(input);
     }
 
 

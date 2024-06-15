@@ -13,6 +13,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import java.net.URL;
@@ -43,23 +44,35 @@ public class AesController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        cmbIvLen.getItems().addAll(AesUtil.IV_LENGTH_16, AesUtil.IV_LENGTH_12);
+        cmbIvLen.getSelectionModel().selectFirst();
+
         cmbCharsetName.getItems().addAll(StandardCharsets.UTF_8.name(), "GB2312", StandardCharsets.UTF_16.name(), StandardCharsets.ISO_8859_1.name());
-        cmbCharsetName.getSelectionModel().select(0);
+        cmbCharsetName.getSelectionModel().selectFirst();
 
         cmbKeyLen.getItems().addAll(Arrays.stream(AesUtil.KeyLenEnum.values()).map(AesUtil.KeyLenEnum::getLen).map(String::valueOf).toList());
-        cmbKeyLen.getSelectionModel().select(0);
+        cmbKeyLen.getSelectionModel().selectFirst();
 
-        cmbIvLen.getItems().addAll(AesUtil.IV_LENGTH);
-        cmbIvLen.getSelectionModel().select(0);
 
-        cmbMode.getItems().addAll(AesUtil.AES_CBC, AesUtil.AES_CFB, AesUtil.AES_ECB);
-        cmbMode.getSelectionModel().select(0);
+        cmbMode.getItems().addAll(AesUtil.SYS_MODE_LIST);
+        cmbMode.getSelectionModel().selectFirst();
         // ECB模式不需要向量
         cmbMode.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                txtIv.setVisible(!AesUtil.AES_ECB.equals(newValue));
                 txtIv.setText(null);
+                boolean isECBMode = StringUtils.isNotBlank(newValue) && AesUtil.SYS_MODE_LIST_ECB.contains(newValue);
+                if (isECBMode) {
+                    txtIv.setVisible(false);
+                } else {
+                    txtIv.setVisible(true);
+                }
+                boolean isGCMMode = StringUtils.isNotBlank(newValue) && AesUtil.SYS_MODE_LIST_GCM.contains(newValue);
+                if (isGCMMode) {
+                    cmbIvLen.setValue(AesUtil.IV_LENGTH_12);
+                } else {
+                    cmbIvLen.setValue(AesUtil.IV_LENGTH_16);
+                }
             }
         });
     }
@@ -75,7 +88,7 @@ public class AesController implements Initializable {
 
     @FXML
     public void btnGenIvOnAction(ActionEvent event) {
-        this.txtIv.setText(AesUtil.getString(AesUtil.IV_LENGTH));
+        this.txtIv.setText(AesUtil.getString(cmbIvLen.getValue()));
     }
 
     @FXML
@@ -96,7 +109,7 @@ public class AesController implements Initializable {
 
         byte[] input = fromText.getBytes(this.getSelectedCharset());
         byte[] key = this.txtKey.getText().getBytes(this.getSelectedCharset());
-        byte[] iv = this.txtIv.isVisible() ? this.txtIv.getText().getBytes(this.getSelectedCharset()) : null;
+        byte[] iv = this.txtIv.isVisible() ? this.txtIv.getText().getBytes(this.getSelectedCharset()) : new byte[0];
 
         try {
             byte[] output = AesUtil.encrypt(cmbMode.getValue(), input, key, iv);
@@ -124,7 +137,7 @@ public class AesController implements Initializable {
 
         byte[] input = Base64.getDecoder().decode(fromText.getBytes(this.getSelectedCharset()));
         byte[] key = this.txtKey.getText().getBytes(this.getSelectedCharset());
-        byte[] iv = this.txtIv.isVisible() ? this.txtIv.getText().getBytes(this.getSelectedCharset()) : null;
+        byte[] iv = this.txtIv.isVisible() ? this.txtIv.getText().getBytes(this.getSelectedCharset()) : new byte[0];
 
         try {
             byte[] output = AesUtil.decrypt(cmbMode.getValue(), input, key, iv);
