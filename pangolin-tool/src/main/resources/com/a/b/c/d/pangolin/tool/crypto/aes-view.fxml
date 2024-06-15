@@ -42,6 +42,7 @@
               GridPane.rowIndex="4">
         <Button fx:id="btnEncrypt" onAction="#btnEncryptOnAction" text="加密"/>
         <Button fx:id="btnDecrypt" onAction="#btnDecryptOnAction" text="解密"/>
+        <ComboBox fx:id="cmbCharsetName" prefWidth="150.0"/>
     </FlowPane>
     <!-- 第5行 -->
     <TextArea fx:id="txtTo" prefWidth="${gridPane.width}" wrapText="true" GridPane.columnIndex="0"

@@ -1,7 +1,5 @@
 package com.a.b.c.d.pangolin.util.crypto;
 
-import com.a.b.c.d.pangolin.util.bean.KeyValueDTO;
-
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
@@ -45,10 +43,25 @@ public class AesUtil {
 
     public static final String BASE_STRING = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-    public static final List<KeyValueDTO> MODE_LIST = Arrays.asList(
-            new KeyValueDTO("AES/CBC/PKCS5Padding", "CBC"),
-            new KeyValueDTO("AES/CFB/PKCS5Padding", "CFB"),
-            new KeyValueDTO("AES/ECB/PKCS5Padding", "ECB")
+    public static final List<String> MODE_LIST = Arrays.asList(
+            "AES/CBC/NoPadding",
+            "AES/CBC/PKCS5Padding",
+            "AES/CBC/ISO10126Padding",
+            "AES/CFB/NoPadding",
+            "AES/CFB/PKCS5Padding",
+            "AES/CFB/ISO10126Padding",
+            "AES/ECB/NoPadding",
+            "AES/ECB/PKCS5Padding",
+            "AES/ECB/ISO10126Padding",
+            "AES/OFB/NoPadding",
+            "AES/OFB/PKCS5Padding",
+            "AES/OFB/ISO10126Padding",
+            "AES/PCBC/NoPadding",
+            "AES/PCBC/PKCS5Padding",
+            "AES/PCBC/ISO10126Padding",
+            "AES/CTR/NoPadding",
+            "AES/CTR/PKCS5Padding",
+            "AES/CTR/ISO10126Padding"
     );
 
     private AesUtil() {
@@ -89,6 +102,47 @@ public class AesUtil {
         cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv));
         return cipher.doFinal(input);
     }
+
+    public static byte[] encrypt(String mode, byte[] input, byte[] key, byte[] iv) throws Exception {
+        byte[] data;
+        switch (mode) {
+            case AES_ECB:
+                data = encryptECB(input, key);
+                break;
+            case AES_CBC:
+                data = encryptCBC(input, key, iv);
+                break;
+            case AES_CFB:
+                data = encryptCFB(input, key, iv);
+                break;
+            default:
+                data = new byte[0];
+                break;
+        }
+
+        return data;
+    }
+
+    public static byte[] decrypt(String mode, byte[] input, byte[] key, byte[] iv) throws Exception {
+        byte[] data;
+        switch (mode) {
+            case AES_ECB:
+                data = decryptECB(input, key);
+                break;
+            case AES_CBC:
+                data = decryptCBC(input, key, iv);
+                break;
+            case AES_CFB:
+                data = decryptCFB(input, key, iv);
+                break;
+            default:
+                data = new byte[0];
+                break;
+        }
+
+        return data;
+    }
+
 
     public static String getString(int len) {
         int size = BASE_STRING.length();
