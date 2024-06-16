@@ -5,11 +5,7 @@ import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
-import java.util.Random;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class AesUtil {
     /**
@@ -17,8 +13,6 @@ public class AesUtil {
      */
     public static final Integer IV_LENGTH_12 = 12;
     public static final Integer IV_LENGTH_16 = 16;
-
-    public static final String BASE_STRING = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
     /**
      * CBC模式，每个明文块在加密之前与前一个密文块的输出进行异或操作。第一个明文块与初始向量进行异或
@@ -76,10 +70,6 @@ public class AesUtil {
      */
     public static final List<String> SYS_MODE_LIST_GCM = Arrays.asList("AES/GCM/NoPadding", "AES/GCM/PKCS5Padding", "AES/GCM/ISO10126Padding");
 
-    public static final List<String> SYS_MODE_LIST = Stream.of(SYS_MODE_LIST_CBC, SYS_MODE_LIST_CFB, SYS_MODE_LIST_ECB, SYS_MODE_LIST_OFB, SYS_MODE_LIST_PCBC, SYS_MODE_LIST_CTR, SYS_MODE_LIST_GCM)
-            .flatMap(Collection::stream)
-            .collect(Collectors.toList());
-
     private AesUtil() {
     }
 
@@ -106,19 +96,6 @@ public class AesUtil {
         }
         return cipher.doFinal(input);
     }
-
-
-    public static String getString(int len) {
-        int size = BASE_STRING.length();
-        Random random = new Random();
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < len; i++) {
-            int ix = random.nextInt(0, size);
-            builder.append(BASE_STRING.charAt(ix));
-        }
-        return builder.toString();
-    }
-
 
     public static enum KeyLenEnum {
         LEN_16(16),

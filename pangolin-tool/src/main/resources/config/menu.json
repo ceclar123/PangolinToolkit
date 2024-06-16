@@ -105,6 +105,22 @@
         "name": "AES",
         "type": "MenuItem",
         "fxml": "crypto/aes-view.fxml"
+      },
+      {
+        "id": "m3_2",
+        "name": "DES",
+        "type": "MenuItem",
+        "fxml": "crypto/des-view.fxml"
+      },
+      {
+        "id": "m3_3",
+        "name": "TripleDES",
+        "type": "MenuItem",
+        "fxml": "crypto/triple-des-view.fxml"
+      },
+      {
+        "id": "m3_4",
+        "type": "SeparatorMenuItem"
       }
     ]
   }

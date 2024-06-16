@@ -3,10 +3,25 @@ package com.a.b.c.d.pangolin.util;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Random;
+
 public class StringUtil {
     private StringUtil() {
     }
 
+    public static final String BASE_STRING = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+
+    public static String getRandomString(int len) {
+        int size = BASE_STRING.length();
+        Random random = new Random();
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < len; i++) {
+            int ix = random.nextInt(0, size);
+            builder.append(BASE_STRING.charAt(ix));
+        }
+        return builder.toString();
+    }
 
     public static boolean isBlank(final CharSequence cs) {
         return StringUtils.isBlank(cs);

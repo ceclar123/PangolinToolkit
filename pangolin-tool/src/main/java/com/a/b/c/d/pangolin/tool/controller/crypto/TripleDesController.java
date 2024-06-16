@@ -3,7 +3,7 @@ package com.a.b.c.d.pangolin.tool.controller.crypto;
 import com.a.b.c.d.pangolin.tool.util.AlertUtil;
 import com.a.b.c.d.pangolin.util.ExceptionUtil;
 import com.a.b.c.d.pangolin.util.StringUtil;
-import com.a.b.c.d.pangolin.util.crypto.AesUtil;
+import com.a.b.c.d.pangolin.util.crypto.TripleDesUtil;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -18,7 +18,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-public class AesController implements Initializable {
+public class TripleDesController implements Initializable {
     @FXML
     private TextArea txtFrom;
     @FXML
@@ -39,29 +39,27 @@ public class AesController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        cmbIvLen.getItems().addAll(AesUtil.IV_LENGTH_16, AesUtil.IV_LENGTH_12);
+        cmbIvLen.getItems().addAll(TripleDesUtil.IV_LENGTH_8);
         cmbIvLen.getSelectionModel().selectFirst();
 
         cmbCharsetName.getItems().addAll(StandardCharsets.UTF_8.name(), "GB2312", StandardCharsets.UTF_16.name(), StandardCharsets.ISO_8859_1.name());
         cmbCharsetName.getSelectionModel().selectFirst();
 
-        cmbKeyLen.getItems().addAll(Arrays.stream(AesUtil.KeyLenEnum.values()).map(AesUtil.KeyLenEnum::getLen).map(String::valueOf).toList());
+        cmbKeyLen.getItems().addAll(Arrays.stream(TripleDesUtil.KeyLenEnum.values()).map(TripleDesUtil.KeyLenEnum::getLen).map(String::valueOf).toList());
         cmbKeyLen.getSelectionModel().selectFirst();
 
         List<Object> cmbList = new ArrayList<Object>();
-        cmbList.addAll(AesUtil.SYS_MODE_LIST_CBC);
+        cmbList.addAll(TripleDesUtil.SYS_MODE_LIST_CBC);
         cmbList.add(new Separator());
-        cmbList.addAll(AesUtil.SYS_MODE_LIST_CFB);
+        cmbList.addAll(TripleDesUtil.SYS_MODE_LIST_CFB);
         cmbList.add(new Separator());
-        cmbList.addAll(AesUtil.SYS_MODE_LIST_ECB);
+        cmbList.addAll(TripleDesUtil.SYS_MODE_LIST_ECB);
         cmbList.add(new Separator());
-        cmbList.addAll(AesUtil.SYS_MODE_LIST_OFB);
+        cmbList.addAll(TripleDesUtil.SYS_MODE_LIST_OFB);
         cmbList.add(new Separator());
-        cmbList.addAll(AesUtil.SYS_MODE_LIST_PCBC);
+        cmbList.addAll(TripleDesUtil.SYS_MODE_LIST_PCBC);
         cmbList.add(new Separator());
-        cmbList.addAll(AesUtil.SYS_MODE_LIST_CTR);
-        cmbList.add(new Separator());
-        cmbList.addAll(AesUtil.SYS_MODE_LIST_GCM);
+        cmbList.addAll(TripleDesUtil.SYS_MODE_LIST_CTR);
         cmbMode.getItems().addAll(cmbList);
         cmbMode.getSelectionModel().selectFirst();
         // ECB模式不需要向量
@@ -69,17 +67,11 @@ public class AesController implements Initializable {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 txtIv.setText(null);
-                boolean isECBMode = StringUtils.isNotBlank(newValue) && AesUtil.SYS_MODE_LIST_ECB.contains(newValue);
+                boolean isECBMode = StringUtils.isNotBlank(newValue) && TripleDesUtil.SYS_MODE_LIST_ECB.contains(newValue);
                 if (isECBMode) {
                     txtIv.setVisible(false);
                 } else {
                     txtIv.setVisible(true);
-                }
-                boolean isGCMMode = StringUtils.isNotBlank(newValue) && AesUtil.SYS_MODE_LIST_GCM.contains(newValue);
-                if (isGCMMode) {
-                    cmbIvLen.setValue(AesUtil.IV_LENGTH_12);
-                } else {
-                    cmbIvLen.setValue(AesUtil.IV_LENGTH_16);
                 }
             }
         });
@@ -120,7 +112,7 @@ public class AesController implements Initializable {
         byte[] iv = this.txtIv.isVisible() ? this.txtIv.getText().getBytes(this.getSelectedCharset()) : new byte[0];
 
         try {
-            byte[] output = AesUtil.encrypt(cmbMode.getValue().toString(), input, key, iv);
+            byte[] output = TripleDesUtil.encrypt(cmbMode.getValue().toString(), input, key, iv);
             this.txtTo.setText(new String(Base64.getEncoder().encode(output), this.getSelectedCharset()));
         } catch (Exception e) {
             AlertUtil.showAlert(Alert.AlertType.ERROR, "错误", e.getMessage(), ExceptionUtil.getStackTrace(e));
@@ -148,7 +140,7 @@ public class AesController implements Initializable {
         byte[] iv = this.txtIv.isVisible() ? this.txtIv.getText().getBytes(this.getSelectedCharset()) : new byte[0];
 
         try {
-            byte[] output = AesUtil.decrypt(cmbMode.getValue().toString(), input, key, iv);
+            byte[] output = TripleDesUtil.decrypt(cmbMode.getValue().toString(), input, key, iv);
             this.txtTo.setText(new String(output, this.getSelectedCharset()));
         } catch (Exception e) {
             AlertUtil.showAlert(Alert.AlertType.ERROR, "错误", e.getMessage(), ExceptionUtil.getStackTrace(e));
