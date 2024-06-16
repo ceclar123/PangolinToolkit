@@ -1,6 +1,7 @@
 package com.a.b.c.d.pangolin.tool.controller.crypto;
 
 import com.a.b.c.d.pangolin.tool.util.AlertUtil;
+import com.a.b.c.d.pangolin.tool.util.GridPaneUtil;
 import com.a.b.c.d.pangolin.util.ExceptionUtil;
 import com.a.b.c.d.pangolin.util.StringUtil;
 import com.a.b.c.d.pangolin.util.crypto.RsaUtil;
@@ -11,9 +12,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import org.apache.commons.collections4.SetUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -24,7 +23,6 @@ import java.security.KeyPair;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.ResourceBundle;
-import java.util.Set;
 
 public class RsaController implements Initializable {
     @FXML
@@ -60,57 +58,11 @@ public class RsaController implements Initializable {
         cmbSignType.getSelectionModel().selectFirst();
 
         // gridPane宽高自适应
-        initGridPane();
+        GridPaneUtil.setAutoPercentWidth(this.gridPane);
+        GridPaneUtil.setAutoPercentHeight(this.gridPane);
 
         // gridPaneContent宽高自适应
-        initGridPaneContent();
-    }
-
-    private void initGridPane() {
-        // 动态列宽
-        int cols = gridPane.getColumnCount();
-        if (cols > 1) {
-            // 固定列宽
-            double fixWidth = gridPane.getColumnConstraints().stream()
-                    .map(ColumnConstraints::getPrefWidth)
-                    .limit(cols - 1)
-                    .reduce(0D, Double::sum);
-            gridPane.getColumnConstraints().getLast().prefWidthProperty().bind(gridPane.widthProperty().subtract(fixWidth));
-        }
-
-        // 动态行高度
-        int rows = gridPane.getRowCount();
-        if (rows > 1) {
-            // 固定行高
-            Set<Integer> rowIndex = SetUtils.hashSet(3);
-            double fixHeight = 0;
-            for (int i = 0; i < rows; i++) {
-                if (rowIndex.contains(i)) {
-                    continue;
-                }
-                fixHeight += gridPane.getRowConstraints().get(i).getPrefHeight();
-            }
-            gridPane.getRowConstraints().get(3).prefHeightProperty().bind(gridPane.heightProperty().subtract(fixHeight));
-        }
-    }
-
-    private void initGridPaneContent() {
-        // 动态列宽
-        int cols = gridPaneContent.getColumnCount();
-        if (cols > 1) {
-            // 固定列宽
-            // 固定行高
-            Set<Integer> colIndex = SetUtils.hashSet(0, 2);
-            double fixWidth = 0;
-            for (int i = 0; i < cols; i++) {
-                if (colIndex.contains(i)) {
-                    continue;
-                }
-                fixWidth += gridPaneContent.getColumnConstraints().get(i).getPrefWidth();
-            }
-            gridPaneContent.getColumnConstraints().get(0).prefWidthProperty().bind(gridPaneContent.widthProperty().subtract(fixWidth).divide(2));
-            gridPaneContent.getColumnConstraints().get(2).prefWidthProperty().bind(gridPaneContent.widthProperty().subtract(fixWidth).divide(2));
-        }
+        GridPaneUtil.setAutoPercentWidth(this.gridPaneContent);
     }
 
     private Charset getSelectedCharset() {

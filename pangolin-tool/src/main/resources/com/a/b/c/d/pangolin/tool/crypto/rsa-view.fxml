@@ -14,7 +14,7 @@
         <RowConstraints prefHeight="30"/>
         <RowConstraints prefHeight="30"/>
         <RowConstraints prefHeight="150"/>
-        <RowConstraints prefHeight="300"/>
+        <RowConstraints prefHeight="300" percentHeight="100"/>
     </rowConstraints>
     <!-- 第1行 -->
     <Label text="密钥长度(字节)：" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
@@ -38,9 +38,9 @@
     <GridPane fx:id="gridPaneContent" prefWidth="${gridPane.width}"
               GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="3">
         <columnConstraints>
-            <ColumnConstraints prefWidth="200"/>
+            <ColumnConstraints prefWidth="200" percentWidth="50"/>
             <ColumnConstraints prefWidth="150"/>
-            <ColumnConstraints prefWidth="200"/>
+            <ColumnConstraints prefWidth="200" percentWidth="50"/>
         </columnConstraints>
         <rowConstraints>
             <RowConstraints/>
