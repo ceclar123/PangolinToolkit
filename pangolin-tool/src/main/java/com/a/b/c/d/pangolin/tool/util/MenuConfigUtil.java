@@ -4,8 +4,10 @@ import com.a.b.c.d.pangolin.tool.MainApplication;
 import com.a.b.c.d.pangolin.util.*;
 import com.a.b.c.d.pangolin.util.bean.MenuConfigDTO;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.layout.Pane;
 
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -132,9 +134,15 @@ public class MenuConfigUtil {
                 if (Objects.nonNull(source.getUserData())) {
                     FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource(source.getUserData().toString()));
                     Node node = fxmlLoader.load();
-                    node.prefWidth(tabPane.getWidth());
-                    node.prefHeight(tabPane.getHeight());
-                    tab.setContent(node);
+                    if (node instanceof Pane) {
+                        Pane pane = (Pane) node;
+                        pane.setPadding(new Insets(5, 10, 5, 10));
+                        pane.prefHeightProperty().bind(tabPane.heightProperty());
+                        pane.prefWidthProperty().bind(tabPane.widthProperty());
+                        pane.maxHeightProperty().bind(tabPane.maxHeightProperty());
+                        pane.maxWidthProperty().bind(tabPane.maxWidthProperty());
+                        tab.setContent(pane);
+                    }
                 }
                 tabPane.getTabs().add(tab);
                 tabPane.getSelectionModel().select(tab);

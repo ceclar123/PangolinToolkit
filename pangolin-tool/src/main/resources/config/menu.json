@@ -121,6 +121,12 @@
       {
         "id": "m3_4",
         "type": "SeparatorMenuItem"
+      },
+      {
+        "id": "m3_5",
+        "name": "RSA",
+        "type": "MenuItem",
+        "fxml": "crypto/rsa-view.fxml"
       }
     ]
   }

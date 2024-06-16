@@ -3,26 +3,28 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <GridPane fx:id="gridPane" prefHeight="600" prefWidth="800" xmlns="http://javafx.com/javafx/17.0.2-ea"
-          xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.a.b.c.d.pangolin.tool.controller.crypto.DesController">
+          xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.a.b.c.d.pangolin.tool.controller.crypto.DesController"
+          hgap="10" vgap="10">
     <columnConstraints>
         <ColumnConstraints prefWidth="100"/>
-        <ColumnConstraints prefWidth="150"/>
-        <ColumnConstraints prefWidth="50"/>
-        <ColumnConstraints percentWidth="100"/>
-        <ColumnConstraints/>
+        <ColumnConstraints prefWidth="200"/>
+        <ColumnConstraints prefWidth="100"/>
+        <ColumnConstraints prefWidth="300"/>
     </columnConstraints>
     <rowConstraints>
         <RowConstraints prefHeight="30"/>
         <RowConstraints prefHeight="30"/>
         <RowConstraints prefHeight="30"/>
-        <RowConstraints percentHeight="50"/>
+        <RowConstraints prefHeight="150"/>
         <RowConstraints prefHeight="30"/>
-        <RowConstraints percentHeight="50"/>
+        <RowConstraints prefHeight="150"/>
     </rowConstraints>
     <!-- 第1行 -->
     <Label text="加密模式：" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-    <ComboBox fx:id="cmbMode" prefWidth="200" GridPane.columnIndex="1" GridPane.columnSpan="3"
+    <ComboBox fx:id="cmbMode" prefWidth="200" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+    <ComboBox fx:id="cmbCharsetName" prefWidth="150.0" GridPane.columnIndex="2" GridPane.columnSpan="2"
               GridPane.rowIndex="0"/>
+
     <!-- 第2行 -->
     <Label text="密钥长度(字节)：" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
     <ComboBox fx:id="cmbKeyLen" prefWidth="150" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
@@ -42,7 +44,6 @@
               GridPane.rowIndex="4">
         <Button fx:id="btnEncrypt" onAction="#btnEncryptOnAction" text="加密"/>
         <Button fx:id="btnDecrypt" onAction="#btnDecryptOnAction" text="解密"/>
-        <ComboBox fx:id="cmbCharsetName" prefWidth="150.0"/>
     </FlowPane>
     <!-- 第5行 -->
     <TextArea fx:id="txtTo" prefWidth="${gridPane.width}" wrapText="true" GridPane.columnIndex="0"

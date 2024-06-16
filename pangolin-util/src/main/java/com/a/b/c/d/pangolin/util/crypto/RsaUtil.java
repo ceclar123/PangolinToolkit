@@ -10,16 +10,13 @@ import java.security.spec.X509EncodedKeySpec;
 
 /**
  * <pre>
- *     密钥长度不限制，默认长度1024位，推荐长度2048位
+ *     RSA:密钥长度不限制，默认长度1024位，推荐长度2048位
+ *     RSA2:密钥的长度至少为2048
  * </pre>
  */
 public class RsaUtil {
     private RsaUtil() {
     }
-
-    //标准签名算法名称
-    private static final String RSA_SIGNATURE_ALGORITHM = "SHA1withRSA";
-    private static final String RSA2_SIGNATURE_ALGORITHM = "SHA256withRSA";
 
     public static KeyPair genKeyPair(int byteLen, byte[] seed) throws Exception {
         KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");

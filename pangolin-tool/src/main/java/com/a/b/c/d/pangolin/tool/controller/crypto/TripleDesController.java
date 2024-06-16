@@ -10,6 +10,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import org.apache.commons.collections4.SetUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -35,7 +38,8 @@ public class TripleDesController implements Initializable {
     private TextField txtKey;
     @FXML
     private TextField txtIv;
-
+    @FXML
+    private GridPane gridPane;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -75,6 +79,33 @@ public class TripleDesController implements Initializable {
                 }
             }
         });
+
+        // 动态列宽
+        int cols = gridPane.getColumnCount();
+        if (cols > 1) {
+            // 固定列宽
+            double fixWidth = gridPane.getColumnConstraints().stream()
+                    .map(ColumnConstraints::getPrefWidth)
+                    .limit(cols - 1)
+                    .reduce(0D, Double::sum);
+            gridPane.getColumnConstraints().getLast().prefWidthProperty().bind(gridPane.widthProperty().subtract(fixWidth));
+        }
+
+        // 动态行高度
+        int rows = gridPane.getRowCount();
+        if (rows > 1) {
+            // 固定行高
+            Set<Integer> rowIndex = SetUtils.hashSet(3, 5);
+            double fixHeight = 0;
+            for (int i = 0; i < rows; i++) {
+                if (rowIndex.contains(i)) {
+                    continue;
+                }
+                fixHeight += gridPane.getRowConstraints().get(i).getPrefHeight();
+            }
+            gridPane.getRowConstraints().get(3).prefHeightProperty().bind(gridPane.heightProperty().subtract(fixHeight).divide(2));
+            gridPane.getRowConstraints().get(5).prefHeightProperty().bind(gridPane.heightProperty().subtract(fixHeight).divide(2));
+        }
     }
 
     private Charset getSelectedCharset() {
