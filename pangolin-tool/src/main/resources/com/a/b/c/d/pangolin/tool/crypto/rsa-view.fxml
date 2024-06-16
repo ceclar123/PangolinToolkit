@@ -2,18 +2,19 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<GridPane fx:id="gridPane" prefHeight="600" prefWidth="800" xmlns="http://javafx.com/javafx/17.0.2-ea"
-          xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.a.b.c.d.pangolin.tool.controller.crypto.RsaController">
+<GridPane fx:id="gridPane" hgap="10" prefHeight="600" prefWidth="800" vgap="10"
+          xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="com.a.b.c.d.pangolin.tool.controller.crypto.RsaController">
     <columnConstraints>
         <ColumnConstraints prefWidth="100"/>
         <ColumnConstraints prefWidth="150"/>
-        <ColumnConstraints/>
+        <ColumnConstraints prefWidth="300"/>
     </columnConstraints>
     <rowConstraints>
         <RowConstraints prefHeight="30"/>
         <RowConstraints prefHeight="30"/>
         <RowConstraints prefHeight="150"/>
-        <RowConstraints percentHeight="100"/>
+        <RowConstraints prefHeight="300"/>
     </rowConstraints>
     <!-- 第1行 -->
     <Label text="密钥长度(字节)：" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
@@ -24,8 +25,8 @@
     <TextField fx:id="txtRandom" prefWidth="300" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
     <Button onAction="#btnGenKeyOnAction" text="生成密钥对" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
     <!-- 第3行 -->
-    <SplitPane fx:id="spKey" dividerPositions="0.5" GridPane.columnIndex="0"
-               GridPane.columnSpan="3" GridPane.rowIndex="2">
+    <SplitPane fx:id="spKey" dividerPositions="0.5" GridPane.columnIndex="0" GridPane.columnSpan="3"
+               GridPane.rowIndex="2">
         <TitledPane collapsible="false" text="公钥">
             <TextArea fx:id="txtPubKey" minWidth="150" prefHeight="150" wrapText="true"/>
         </TitledPane>
@@ -34,18 +35,33 @@
         </TitledPane>
     </SplitPane>
     <!-- 第4行 -->
-    <SplitPane fx:id="spContent" dividerPositions="0.5" prefWidth="${gridPane.width}" GridPane.columnIndex="0"
-               GridPane.columnSpan="3" GridPane.rowIndex="3">
-        <TitledPane alignment="TOP_LEFT" collapsible="false" text="明文">
-            <TextArea fx:id="txtFrom" minWidth="100" wrapText="true" prefHeight="${spContent.height}"/>
+    <GridPane fx:id="gridPaneContent" prefWidth="${gridPane.width}"
+              GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="3">
+        <columnConstraints>
+            <ColumnConstraints prefWidth="200"/>
+            <ColumnConstraints prefWidth="150"/>
+            <ColumnConstraints prefWidth="200"/>
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints/>
+        </rowConstraints>
+        <TitledPane alignment="TOP_LEFT" collapsible="false" text="明文" GridPane.columnIndex="0" GridPane.rowIndex="0">
+            <TextArea fx:id="txtFrom" minWidth="100" prefHeight="${gridPaneContent.height}" wrapText="true"/>
         </TitledPane>
-        <FlowPane alignment="CENTER" columnHalignment="CENTER" maxWidth="60" minWidth="60" orientation="VERTICAL"
-                  prefWidth="60">
-            <Button fx:id="btnEncrypt" onAction="#btnEncryptOnAction" text="加密"/>
-            <Button fx:id="btnDecrypt" onAction="#btnDecryptOnAction" text="解密"/>
+        <FlowPane fx:id="flowPane" alignment="CENTER" orientation="VERTICAL" maxWidth="150" minWidth="150"
+                  prefWidth="150" GridPane.columnIndex="1" GridPane.rowIndex="0" vgap="10">
+            <Button onAction="#btnPubEncryptOnAction" text="公钥加密" prefWidth="${flowPane.width}"/>
+            <Button onAction="#btnPriDecryptOnAction" text="私钥解密" prefWidth="${flowPane.width}"/>
+            <SplitPane/>
+            <Button onAction="#btnPriEncryptOnAction" text="私钥加密" prefWidth="${flowPane.width}"/>
+            <Button onAction="#btnPubDecryptOnAction" text="公钥解密" prefWidth="${flowPane.width}"/>
+            <SplitPane/>
+            <ComboBox fx:id="cmbSignType" maxWidth="${flowPane.width}" minWidth="100" prefWidth="${flowPane.width}"/>
+            <Button onAction="#btnPriSinOnAction" text="私钥加签" prefWidth="${flowPane.width}"/>
+            <Button onAction="#btnPubVerifyOnAction" text="公钥验签" prefWidth="${flowPane.width}"/>
         </FlowPane>
-        <TitledPane collapsible="false" text="密文">
-            <TextArea fx:id="txtTo" minWidth="100" wrapText="true" prefHeight="${spContent.height}"/>
+        <TitledPane collapsible="false" text="密文" GridPane.columnIndex="2" GridPane.rowIndex="0">
+            <TextArea fx:id="txtTo" minWidth="100" prefHeight="${gridPaneContent.height}" wrapText="true"/>
         </TitledPane>
-    </SplitPane>
+    </GridPane>
 </GridPane>

@@ -2,11 +2,13 @@ package com.a.b.c.d.pangolin.util.crypto;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.crypto.Cipher;
 import java.security.*;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.Objects;
 
 /**
  * <pre>
@@ -37,7 +39,7 @@ public class RsaUtil {
      * @param pubKey 公钥
      * @throws Exception
      */
-    public static byte[] encrypt(byte[] input, byte[] pubKey) throws Exception {
+    public static byte[] encryptByPubKey(byte[] input, byte[] pubKey) throws Exception {
         //创建X509编码密钥规范
         X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(pubKey);
         //返回转换指定算法的KeyFactory对象
@@ -59,7 +61,7 @@ public class RsaUtil {
      * @param priKey 私钥
      * @throws Exception
      */
-    public static byte[] decrypt(byte[] input, byte[] priKey) throws Exception {
+    public static byte[] decryptByPriKey(byte[] input, byte[] priKey) throws Exception {
         //创建PKCS8编码密钥规范
         PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(priKey);
         //返回转换指定算法的KeyFactory对象
@@ -77,13 +79,13 @@ public class RsaUtil {
     /**
      * RSA签名(用私钥签名)
      *
-     * @param data     待签名数据
+     * @param input    待签名数据
      * @param priKey   私钥
      * @param signType RSA或RSA2
      * @return 签名
      * @throws Exception
      */
-    public static byte[] sign(byte[] data, byte[] priKey, RsaSignTypeEnum signType) throws Exception {
+    public static byte[] sign(byte[] input, byte[] priKey, RsaSignTypeEnum signType) throws Exception {
         //创建PKCS8编码密钥规范
         PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(priKey);
         //返回转换指定算法的KeyFactory对象
@@ -97,7 +99,7 @@ public class RsaUtil {
         //用私钥初始化签名对象Signature
         signature.initSign(privateKey);
         //将待签名的数据传送给签名对象(须在初始化之后)
-        signature.update(data);
+        signature.update(input);
         //返回签名结果字节数组
         return signature.sign();
     }
@@ -105,13 +107,13 @@ public class RsaUtil {
     /**
      * RSA校验数字签名(用公钥验证签名)
      *
-     * @param data     待校验数据
+     * @param input    待校验数据
      * @param sign     数字签名
      * @param pubKey   公钥
      * @param signType RSA或RSA2
      * @return boolean 校验成功返回true，失败返回false
      */
-    public static boolean verify(byte[] data, byte[] sign, byte[] pubKey, RsaSignTypeEnum signType) throws Exception {
+    public static boolean verify(byte[] input, byte[] sign, byte[] pubKey, RsaSignTypeEnum signType) throws Exception {
         //返回转换指定算法的KeyFactory对象
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         //创建X509编码密钥规范
@@ -125,11 +127,54 @@ public class RsaUtil {
         //用公钥初始化签名对象,用于验证签名
         signature.initVerify(publicKey);
         //更新签名内容
-        signature.update(data);
+        signature.update(input);
         //得到验证结果
         return signature.verify(sign);
     }
 
+    /**
+     * 私钥加密(用于数据加密)
+     *
+     * @param input  加密前的数据
+     * @param priKey 公钥
+     * @throws Exception
+     */
+    public static byte[] encryptByPriKey(byte[] input, byte[] priKey) throws Exception {
+        //创建PKCS8编码密钥规范
+        PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(priKey);
+        //返回转换指定算法的KeyFactory对象
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        //根据PKCS8编码密钥规范产生私钥对象
+        PrivateKey privateKey = keyFactory.generatePrivate(pkcs8KeySpec);
+        //根据转换的名称获取密码对象Cipher（转换的名称：算法/工作模式/填充模式）
+        Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
+        //用公钥初始化此Cipher对象（加密模式）
+        cipher.init(Cipher.ENCRYPT_MODE, privateKey);
+        //对数据加密
+        return cipher.doFinal(input);
+    }
+
+    /**
+     * 私钥解密(用于数据解密)
+     *
+     * @param input  解密前的数据
+     * @param pubKey 私钥
+     * @throws Exception
+     */
+    public static byte[] decryptByPubKey(byte[] input, byte[] pubKey) throws Exception {
+        //创建X509编码密钥规范
+        X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(pubKey);
+        //返回转换指定算法的KeyFactory对象
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        //根据X509编码密钥规范产生公钥对象
+        PublicKey publicKey = keyFactory.generatePublic(x509KeySpec);
+        //根据转换的名称获取密码对象Cipher（转换的名称：算法/工作模式/填充模式）
+        Cipher cipher = Cipher.getInstance(keyFactory.getAlgorithm());
+        //用私钥初始化此Cipher对象（解密模式）
+        cipher.init(Cipher.DECRYPT_MODE, publicKey);
+        //对数据解密
+        return cipher.doFinal(input);
+    }
 
     public static enum KeyLenEnum {
         LEN_64(64),
@@ -172,6 +217,20 @@ public class RsaUtil {
 
         public void setCode(String code) {
             this.code = code;
+        }
+
+        public static RsaSignTypeEnum getItemByCode(String code) {
+            if (StringUtils.isBlank(code)) {
+                return null;
+            }
+
+            for (RsaSignTypeEnum item : RsaSignTypeEnum.values()) {
+                if (Objects.equals(item.getCode(), code)) {
+                    return item;
+                }
+            }
+
+            return null;
         }
     }
 }
