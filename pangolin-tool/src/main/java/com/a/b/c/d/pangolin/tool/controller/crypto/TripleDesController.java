@@ -1,6 +1,7 @@
 package com.a.b.c.d.pangolin.tool.controller.crypto;
 
 import com.a.b.c.d.pangolin.tool.util.AlertUtil;
+import com.a.b.c.d.pangolin.tool.util.GridPaneUtil;
 import com.a.b.c.d.pangolin.util.ExceptionUtil;
 import com.a.b.c.d.pangolin.util.StringUtil;
 import com.a.b.c.d.pangolin.util.crypto.TripleDesUtil;
@@ -10,9 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import org.apache.commons.collections4.SetUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -40,6 +39,8 @@ public class TripleDesController implements Initializable {
     private TextField txtIv;
     @FXML
     private GridPane gridPane;
+    @FXML
+    private GridPane gridPaneContent;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -80,32 +81,12 @@ public class TripleDesController implements Initializable {
             }
         });
 
-        // 动态列宽
-        int cols = gridPane.getColumnCount();
-        if (cols > 1) {
-            // 固定列宽
-            double fixWidth = gridPane.getColumnConstraints().stream()
-                    .map(ColumnConstraints::getPrefWidth)
-                    .limit(cols - 1)
-                    .reduce(0D, Double::sum);
-            gridPane.getColumnConstraints().getLast().prefWidthProperty().bind(gridPane.widthProperty().subtract(fixWidth));
-        }
+        // gridPane宽高自适应
+        GridPaneUtil.setAutoPercentWidth(this.gridPane);
+        GridPaneUtil.setAutoPercentHeight(this.gridPane);
 
-        // 动态行高度
-        int rows = gridPane.getRowCount();
-        if (rows > 1) {
-            // 固定行高
-            Set<Integer> rowIndex = SetUtils.hashSet(3, 5);
-            double fixHeight = 0;
-            for (int i = 0; i < rows; i++) {
-                if (rowIndex.contains(i)) {
-                    continue;
-                }
-                fixHeight += gridPane.getRowConstraints().get(i).getPrefHeight();
-            }
-            gridPane.getRowConstraints().get(3).prefHeightProperty().bind(gridPane.heightProperty().subtract(fixHeight).divide(2));
-            gridPane.getRowConstraints().get(5).prefHeightProperty().bind(gridPane.heightProperty().subtract(fixHeight).divide(2));
-        }
+        // gridPaneContent宽高自适应
+        GridPaneUtil.setAutoPercentWidth(this.gridPaneContent);
     }
 
     private Charset getSelectedCharset() {
@@ -126,7 +107,7 @@ public class TripleDesController implements Initializable {
     public void btnEncryptOnAction(ActionEvent event) {
         String fromText = this.txtFrom.getText();
         if (StringUtil.isBlank(fromText)) {
-            AlertUtil.showAlert(Alert.AlertType.INFORMATION, "提示", "输入内容为空");
+            AlertUtil.showAlert(Alert.AlertType.INFORMATION, "提示", "明文内容为空");
             return;
         }
         if (StringUtil.isBlank(this.txtKey.getText())) {
@@ -138,12 +119,12 @@ public class TripleDesController implements Initializable {
             return;
         }
 
-        byte[] input = fromText.getBytes(this.getSelectedCharset());
-        byte[] key = this.txtKey.getText().getBytes(this.getSelectedCharset());
-        byte[] iv = this.txtIv.isVisible() ? this.txtIv.getText().getBytes(this.getSelectedCharset()) : new byte[0];
-
         try {
+            byte[] input = fromText.getBytes(this.getSelectedCharset());
+            byte[] key = this.txtKey.getText().getBytes(this.getSelectedCharset());
+            byte[] iv = this.txtIv.isVisible() ? this.txtIv.getText().getBytes(this.getSelectedCharset()) : new byte[0];
             byte[] output = TripleDesUtil.encrypt(cmbMode.getValue().toString(), input, key, iv);
+
             this.txtTo.setText(new String(Base64.getEncoder().encode(output), this.getSelectedCharset()));
         } catch (Exception e) {
             AlertUtil.showAlert(Alert.AlertType.ERROR, "错误", e.getMessage(), ExceptionUtil.getStackTrace(e));
@@ -152,9 +133,9 @@ public class TripleDesController implements Initializable {
 
     @FXML
     public void btnDecryptOnAction(ActionEvent event) {
-        String fromText = this.txtFrom.getText();
-        if (StringUtil.isBlank(fromText)) {
-            AlertUtil.showAlert(Alert.AlertType.INFORMATION, "提示", "输入内容为空");
+        String toTxt = this.txtTo.getText();
+        if (StringUtil.isBlank(toTxt)) {
+            AlertUtil.showAlert(Alert.AlertType.INFORMATION, "提示", "密文内容为空");
             return;
         }
         if (StringUtil.isBlank(this.txtKey.getText())) {
@@ -166,13 +147,13 @@ public class TripleDesController implements Initializable {
             return;
         }
 
-        byte[] input = Base64.getDecoder().decode(fromText.getBytes(this.getSelectedCharset()));
-        byte[] key = this.txtKey.getText().getBytes(this.getSelectedCharset());
-        byte[] iv = this.txtIv.isVisible() ? this.txtIv.getText().getBytes(this.getSelectedCharset()) : new byte[0];
-
         try {
+            byte[] input = Base64.getDecoder().decode(toTxt.getBytes(this.getSelectedCharset()));
+            byte[] key = this.txtKey.getText().getBytes(this.getSelectedCharset());
+            byte[] iv = this.txtIv.isVisible() ? this.txtIv.getText().getBytes(this.getSelectedCharset()) : new byte[0];
             byte[] output = TripleDesUtil.decrypt(cmbMode.getValue().toString(), input, key, iv);
-            this.txtTo.setText(new String(output, this.getSelectedCharset()));
+
+            this.txtFrom.setText(new String(output, this.getSelectedCharset()));
         } catch (Exception e) {
             AlertUtil.showAlert(Alert.AlertType.ERROR, "错误", e.getMessage(), ExceptionUtil.getStackTrace(e));
         }
