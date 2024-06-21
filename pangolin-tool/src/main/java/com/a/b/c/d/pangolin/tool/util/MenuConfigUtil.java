@@ -46,7 +46,7 @@ public class MenuConfigUtil {
         } catch (Exception e) {
             this.txtMsg.appendText(ExceptionUtil.getStackTrace(e));
         }
-        this.list = JsonUtil.parseArray(json, MenuConfigDTO.class);
+        this.list = FastJsonUtil.parseArray(json, MenuConfigDTO.class);
 
         if (CollectionUtils.isEmpty(list)) {
             return;

@@ -12,10 +12,11 @@
     <bottom>
         <FlowPane alignment="CENTER_LEFT" prefWidth="${borderPane.width}" BorderPane.alignment="CENTER_LEFT"
                   prefHeight="50">
-            <Button fx:id="btnFormatPretty" onAction="#btnFormatPrettyOnAction" text="格式化"/>
-            <Button fx:id="btnFormatCompress" onAction="#btnFormatCompressOnAction" text="压缩"/>
-            <Button fx:id="btnFormatAddEscape" onAction="#btnFormatAddEscapeOnAction" text="转义"/>
-            <Button fx:id="btnFormatRemoveEscape" onAction="#btnFormatRemoveEscapeOnAction" text="去除转义"/>
+            <Button onAction="#btnCheckOnAction" text="校验"/>
+            <Button onAction="#btnFormatPrettyOnAction" text="格式化"/>
+            <Button onAction="#btnFormatCompressOnAction" text="压缩"/>
+            <Button onAction="#btnFormatAddEscapeOnAction" text="转义"/>
+            <Button onAction="#btnFormatRemoveEscapeOnAction" text="去除转义"/>
         </FlowPane>
     </bottom>
 </BorderPane>
