@@ -92,6 +92,12 @@
         "name": "JSON格式化",
         "type": "MenuItem",
         "fxml": "json/format-view.fxml"
+      },
+      {
+        "id": "m2_1",
+        "name": "JSON转CSV",
+        "type": "MenuItem",
+        "fxml": "json/convert-csv-view.fxml"
       }
     ]
   },
