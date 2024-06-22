@@ -81,4 +81,61 @@ public class StringUtil {
 
         return bytes;
     }
+
+    public static String toLowerCamelCase(String s) {
+        if (s == null || s.isEmpty()) {
+            return s;
+        }
+
+        // 假设输入字符串是大驼峰，且每个单词间可能有下划线或空格，替换下划线为空格，并移除两端空格
+        s = s.replaceAll("_", " ").trim();
+        // 使用空格分割字符串
+        String[] parts = s.split("\\s+");
+
+        if (parts.length == 0) {
+            return "";
+        }
+
+        StringBuilder camelCase = new StringBuilder();
+        // 第一个单词首字母小写
+        camelCase.append(parts[0].toLowerCase());
+        for (int i = 1; i < parts.length; i++) {
+            // 后续单词首字母大写
+            camelCase.append(parts[i].substring(0, 1).toUpperCase());
+            // 后续单词剩余部分小写
+            camelCase.append(parts[i].substring(1).toLowerCase());
+        }
+
+        return camelCase.toString();
+    }
+
+    public static String toUpperCamelCase(String s) {
+        if (s == null || s.isEmpty()) {
+            return s;
+        }
+
+        // 假设输入字符串是小驼峰或包含下划线，将下划线后的字符前添加空格
+        s = s.replaceAll("_(\\w)", " $1").trim();
+        // 使用空格分割字符串
+        String[] parts = s.split("\\s+");
+
+        if (parts.length == 0) {
+            return "";
+        }
+
+        StringBuilder camelCase = new StringBuilder();
+        for (String part : parts) {
+            // 每个单词首字母大写
+            camelCase.append(part.substring(0, 1).toUpperCase());
+            // 每个单词剩余部分小写
+            camelCase.append(part.substring(1).toLowerCase());
+        }
+
+        // 第一个单词也需要大写（如果它是小驼峰）
+        if (Character.isLowerCase(camelCase.charAt(0))) {
+            camelCase.setCharAt(0, Character.toUpperCase(camelCase.charAt(0)));
+        }
+
+        return camelCase.toString();
+    }
 }

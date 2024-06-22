@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.*?>
+<GridPane fx:id="gridPane" prefHeight="600" prefWidth="800"
+          xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="com.a.b.c.d.pangolin.tool.controller.json.ConvertEntityController">
+    <columnConstraints>
+        <ColumnConstraints percentWidth="100"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints percentHeight="50"/>
+        <RowConstraints prefHeight="40"/>
+        <RowConstraints percentHeight="50"/>
+    </rowConstraints>
+    <children>
+        <TextArea fx:id="txtFrom" prefWidth="${gridPane.width}" wrapText="true" GridPane.columnIndex="0"
+                  GridPane.rowIndex="0"/>
+        <FlowPane alignment="CENTER_LEFT" prefWidth="${gridPane.width}" GridPane.columnIndex="0" GridPane.rowIndex="1">
+            <Button onAction="#btnJavaEntityOnAction" text="Java实体"/>
+            <Button onAction="#btnCSharpEntityOnAction" text="C#实体"/>
+        </FlowPane>
+        <TextArea fx:id="txtTo" prefWidth="${gridPane.width}" wrapText="true" GridPane.columnIndex="0"
+                  GridPane.rowIndex="2"/>
+    </children>
+</GridPane>
