@@ -97,10 +97,16 @@
         "id": "m2_2",
         "name": "JSON转CSV",
         "type": "MenuItem",
-        "fxml": "json/convert-csv-view.fxml"
+        "fxml": "json/json-convert-csv-view.fxml"
       },
       {
         "id": "m2_3",
+        "name": "CSV转JSON",
+        "type": "MenuItem",
+        "fxml": "json/csv-convert-json-view.fxml"
+      },
+      {
+        "id": "m2_4",
         "name": "JSON转实体",
         "type": "MenuItem",
         "fxml": "json/convert-entity-view.fxml"

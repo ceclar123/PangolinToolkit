@@ -4,8 +4,7 @@ import com.a.b.c.d.pangolin.tool.util.AlertUtil;
 import com.a.b.c.d.pangolin.util.ExceptionUtil;
 import com.a.b.c.d.pangolin.util.StringUtil;
 import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.JSONException;
-import com.alibaba.fastjson2.TypeReference;
+import com.alibaba.fastjson2.filter.PropertyFilter;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -18,18 +17,19 @@ import javafx.stage.Stage;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class ConvertCsvController implements Initializable {
+public class CsvConvertJsonController implements Initializable {
     @FXML
     private TextArea txtFrom;
     @FXML
@@ -42,11 +42,9 @@ public class ConvertCsvController implements Initializable {
 
     private List<Map<String, String>> mapList = null;
 
-    private List<String> colList = null;
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        this.txtDelimiter.setText(StringEscapeUtils.escapeJava("\t"));
     }
 
     private List<String> getColumnList(List<Map<String, String>> mapList) {
@@ -79,6 +77,20 @@ public class ConvertCsvController implements Initializable {
         return rtnList.stream().filter(Objects::nonNull).distinct().collect(Collectors.toList());
     }
 
+    private char getDelimiter() {
+        char delimiter = '\t';
+        if (StringUtils.isNotBlank(this.txtDelimiter.getText())) {
+            String txt = StringEscapeUtils.unescapeJava(this.txtDelimiter.getText().trim());
+            if (Objects.nonNull(txt)) {
+                char[] chars = txt.toCharArray();
+                if (chars.length > 0) {
+                    delimiter = chars[0];
+                }
+            }
+        }
+        return delimiter;
+    }
+
     @FXML
     public void btnCheckOnAction(ActionEvent event) {
         String input = this.txtFrom.getText();
@@ -87,22 +99,25 @@ public class ConvertCsvController implements Initializable {
             return;
         }
 
-        try {
-            if (JSON.isValidObject(input)) {
-                Map<String, String> map = JSON.parseObject(input, new TypeReference<LinkedHashMap<String, String>>() {
-                });
-                if (Objects.nonNull(map)) {
-                    mapList = List.of(map);
+        // 分隔符
+        char delimiter = this.getDelimiter();
+
+        // 第一行是列名
+        CSVFormat format = CSVFormat.DEFAULT.builder().setDelimiter(delimiter).setHeader().setSkipHeaderRecord(true).build();
+        try (CSVParser parser = CSVParser.parse(input, format);) {
+            List<String> colList = parser.getHeaderNames();
+            mapList = new ArrayList<Map<String, String>>();
+            for (CSVRecord csvRecord : parser.getRecords()) {
+                Map<String, String> map = new LinkedHashMap<String, String>();
+                for (String headerName : colList) {
+                    String value = csvRecord.get(headerName);
+                    map.put(headerName, value);
                 }
-            } else if (JSON.isValidArray(input)) {
-                mapList = JSON.parseObject(input, new TypeReference<List<LinkedHashMap<String, String>>>() {
-                });
-            } else {
-                throw new JSONException("JSON内容非法");
+                mapList.add(map);
             }
 
             if (CollectionUtils.isEmpty(mapList)) {
-                AlertUtil.showAlert(Alert.AlertType.ERROR, "失败", "JSON格式错误");
+                AlertUtil.showAlert(Alert.AlertType.ERROR, "失败", "CSV格式错误");
                 return;
             }
 
@@ -149,33 +164,21 @@ public class ConvertCsvController implements Initializable {
             return;
         }
 
-        char delimiter = '\t';
-        if (StringUtils.isNotBlank(this.txtDelimiter.getText())) {
-            delimiter = StringUtils.trim(this.txtDelimiter.getText()).toCharArray()[0];
-        }
-
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("选择导出文件");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON文件（*.json）", "*.json"));
         File file = fileChooser.showOpenDialog(new Stage());
         if (Objects.isNull(file)) {
             return;
         }
 
-        String[] headers = this.colList.toArray(String[]::new);
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8));
-             CSVPrinter printer = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
-            //表头
-            printer.printRecord(headers);
+        try {
+            PropertyFilter filter = (object, name, value) -> {
+                return !name.equals(INDEX_COL_NAME);
+            };
+            String json = JSON.toJSONString(mapList, filter);
 
-            // 数据
-            for (Map<String, String> map : mapList) {
-                printer.printRecord(
-                        Arrays.stream(headers).map(it -> {
-                            return MapUtils.getString(map, it);
-                        }).collect(Collectors.toList())
-                );
-            }
-            printer.flush();
+            FileUtils.write(file, json, StandardCharsets.UTF_8);
 
             AlertUtil.showAlert(Alert.AlertType.INFORMATION, "成功", "导出成功");
         } catch (Exception e) {

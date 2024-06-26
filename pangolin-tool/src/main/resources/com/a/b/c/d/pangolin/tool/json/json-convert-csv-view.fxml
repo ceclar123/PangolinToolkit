@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<BorderPane fx:id="borderPane" prefHeight="600" prefWidth="800" xmlns="http://javafx.com/javafx/17.0.2-ea"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.a.b.c.d.pangolin.tool.controller.json.JsonConvertCsvController">
+    <top>
+        <TextArea fx:id="txtFrom" prefHeight="200" maxHeight="200" prefWidth="${borderPane.width}" wrapText="true"/>
+    </top>
+    <center>
+        <FlowPane alignment="CENTER_LEFT" prefWidth="${borderPane.width}" BorderPane.alignment="CENTER_LEFT"
+                  prefHeight="50" maxHeight="50">
+            <Button onAction="#btnCheckOnAction" text="校验"/>
+            <Button onAction="#btnExportOnAction" text="导出"/>
+            <Label text="分隔符：" prefWidth="50" minWidth="50" maxWidth="100"/>
+            <TextField fx:id="txtDelimiter" prefWidth="100"/>
+        </FlowPane>
+    </center>
+    <bottom>
+        <TableView fx:id="tbContent" prefWidth="${borderPane.width}" prefHeight="${borderPane.height - 250}"/>
+    </bottom>
+</BorderPane>
