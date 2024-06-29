@@ -13,9 +13,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MainApplication  extends Application {
+public class MainApplication extends Application {
+    public static Stage PRIMARY_STAGE = null;
+
     @Override
     public void start(Stage stage) throws IOException {
+        PRIMARY_STAGE = stage;
         Application.setUserAgentStylesheet(STYLESHEET_MODENA);
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("main-view.fxml"));
 
@@ -30,6 +33,8 @@ public class MainApplication  extends Application {
         stage.setTitle("PangolinToolkit");
         stage.setMinWidth(width);
         stage.setMinHeight(height);
+        stage.setWidth(width);
+        stage.setHeight(height);
         stage.getIcons().addAll(this.getIconList());
 
         stage.show();
