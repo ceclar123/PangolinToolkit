@@ -145,6 +145,12 @@
         "name": "RSA",
         "type": "MenuItem",
         "fxml": "crypto/rsa-view.fxml"
+      },
+      {
+        "id": "m3_6",
+        "name": "JWT",
+        "type": "MenuItem",
+        "fxml": "crypto/jwt-view.fxml"
       }
     ]
   }

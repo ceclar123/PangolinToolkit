@@ -25,8 +25,7 @@
     <TextField fx:id="txtRandom" prefWidth="300" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
     <Button onAction="#btnGenKeyOnAction" text="生成密钥对" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
     <!-- 第3行 -->
-    <SplitPane fx:id="spKey" dividerPositions="0.5" GridPane.columnIndex="0" GridPane.columnSpan="3"
-               GridPane.rowIndex="2">
+    <SplitPane dividerPositions="0.5" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="2">
         <TitledPane collapsible="false" text="公钥">
             <TextArea fx:id="txtPubKey" minWidth="150" prefHeight="150" wrapText="true"/>
         </TitledPane>

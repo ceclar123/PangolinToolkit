@@ -2,8 +2,11 @@ package com.a.b.c.d.pangolin.util;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class StringUtil {
     private StringUtil() {
@@ -137,5 +140,14 @@ public class StringUtil {
         }
 
         return camelCase.toString();
+    }
+
+    public static int getNumber(String input) {
+        Pattern pattern = Pattern.compile("\\d+");
+        Matcher matcher = pattern.matcher(input);
+        if (matcher.find()) {
+            return NumberUtils.toInt(matcher.group(), 0);
+        }
+        return 0;
     }
 }
