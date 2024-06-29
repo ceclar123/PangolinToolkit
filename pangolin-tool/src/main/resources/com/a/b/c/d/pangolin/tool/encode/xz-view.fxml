@@ -4,24 +4,29 @@
 <?import javafx.scene.layout.*?>
 <GridPane fx:id="gridPane" prefHeight="600" prefWidth="800"
           xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="com.a.b.c.d.pangolin.tool.controller.encode.XZController">
+          fx:controller="com.a.b.c.d.pangolin.tool.controller.encode.XZController" hgap="10" vgap="10">
     <columnConstraints>
-        <ColumnConstraints percentWidth="100"/>
+        <ColumnConstraints prefWidth="200" percentWidth="50"/>
+        <ColumnConstraints prefWidth="100"/>
+        <ColumnConstraints prefWidth="200" percentWidth="50"/>
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints percentHeight="50"/>
-        <RowConstraints prefHeight="40"/>
-        <RowConstraints percentHeight="50"/>
+        <RowConstraints percentHeight="100"/>
     </rowConstraints>
     <children>
-        <TextArea fx:id="txtFrom" prefWidth="${gridPane.width}" wrapText="true" GridPane.columnIndex="0"
-                  GridPane.rowIndex="0"/>
-        <FlowPane alignment="CENTER_LEFT" prefWidth="${gridPane.width}" GridPane.columnIndex="0" GridPane.rowIndex="1">
-            <Button fx:id="btnEncode" onAction="#btnEncodeOnAction" text="编码"/>
-            <Button fx:id="btnDecode" onAction="#btnDecodeOnAction" text="解码"/>
-            <ComboBox fx:id="cmbCharsetName" prefWidth="150.0"/>
+        <TitledPane alignment="TOP_LEFT" collapsible="false" text="明文" GridPane.columnIndex="0" GridPane.rowIndex="0">
+            <TextArea fx:id="txtFrom" minWidth="100" prefHeight="${gridPane.height}" wrapText="true"/>
+        </TitledPane>
+
+        <FlowPane fx:id="flowPane" alignment="CENTER" orientation="VERTICAL" maxWidth="100" minWidth="100"
+                  prefWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="0" vgap="10">
+            <Button onAction="#btnEncodeOnAction" text="编码" prefWidth="${flowPane.width}"/>
+            <Button onAction="#btnDecodeOnAction" text="解码" prefWidth="${flowPane.width}"/>
+            <ComboBox fx:id="cmbCharsetName" prefWidth="${flowPane.width}"/>
         </FlowPane>
-        <TextArea fx:id="txtTo" prefWidth="${gridPane.width}" wrapText="true" GridPane.columnIndex="0"
-                  GridPane.rowIndex="2"/>
+
+        <TitledPane collapsible="false" text="密文" GridPane.columnIndex="2" GridPane.rowIndex="0">
+            <TextArea fx:id="txtTo" minWidth="100" prefHeight="${gridPane.height}" wrapText="true"/>
+        </TitledPane>
     </children>
 </GridPane>

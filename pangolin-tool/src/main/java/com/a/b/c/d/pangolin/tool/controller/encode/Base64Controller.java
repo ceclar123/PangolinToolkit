@@ -35,7 +35,6 @@ public class Base64Controller implements Initializable {
         // gridPane宽高自适应
         GridPaneUtil.setAutoPercentWidth(this.gridPane);
         GridPaneUtil.setAutoPercentHeight(this.gridPane);
-
     }
 
     private String getCharsetName() {

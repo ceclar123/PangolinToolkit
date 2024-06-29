@@ -1,6 +1,7 @@
 package com.a.b.c.d.pangolin.tool.controller.encode;
 
 import com.a.b.c.d.pangolin.tool.util.AlertUtil;
+import com.a.b.c.d.pangolin.tool.util.GridPaneUtil;
 import com.a.b.c.d.pangolin.util.ExceptionUtil;
 import com.a.b.c.d.pangolin.util.StringUtil;
 import com.a.b.c.d.pangolin.util.encode.ZipUtil;
@@ -10,6 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.GridPane;
 
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -17,6 +19,8 @@ import java.util.Base64;
 import java.util.ResourceBundle;
 
 public class ZipController implements Initializable {
+    @FXML
+    private GridPane gridPane;
     @FXML
     private TextArea txtFrom;
     @FXML
@@ -28,6 +32,10 @@ public class ZipController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         cmbCharsetName.getItems().addAll(StandardCharsets.UTF_8.name(), "GB2312", StandardCharsets.UTF_16.name(), StandardCharsets.ISO_8859_1.name());
         cmbCharsetName.getSelectionModel().select(0);
+
+        // gridPane宽高自适应
+        GridPaneUtil.setAutoPercentWidth(this.gridPane);
+        GridPaneUtil.setAutoPercentHeight(this.gridPane);
     }
 
     private String getCharsetName() {
@@ -38,7 +46,7 @@ public class ZipController implements Initializable {
     public void btnEncodeOnAction(ActionEvent event) {
         String input = this.txtFrom.getText();
         if (StringUtil.isBlank(input)) {
-            AlertUtil.showAlert(Alert.AlertType.INFORMATION, "提示", "输入内容为空");
+            AlertUtil.showAlert(Alert.AlertType.INFORMATION, "提示", "明文内容为空");
             return;
         }
 
@@ -52,15 +60,15 @@ public class ZipController implements Initializable {
 
     @FXML
     public void btnDecodeOnAction(ActionEvent event) {
-        String input = this.txtFrom.getText();
+        String input = this.txtTo.getText();
         if (StringUtil.isBlank(input)) {
-            AlertUtil.showAlert(Alert.AlertType.INFORMATION, "提示", "输入内容为空");
+            AlertUtil.showAlert(Alert.AlertType.INFORMATION, "提示", "密文内容为空");
             return;
         }
 
         String charset = this.getCharsetName();
         try {
-            this.txtTo.setText(new String(ZipUtil.decompress(Base64.getDecoder().decode(input.getBytes(charset))), charset));
+            this.txtFrom.setText(new String(ZipUtil.decompress(Base64.getDecoder().decode(input.getBytes(charset))), charset));
         } catch (Exception e) {
             AlertUtil.showAlert(Alert.AlertType.ERROR, "错误", e.getMessage(), ExceptionUtil.getStackTrace(e));
         }
