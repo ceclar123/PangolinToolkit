@@ -1,5 +1,6 @@
 package com.a.b.c.d.pangolin.tool.controller.json;
 
+import com.a.b.c.d.pangolin.tool.MainApplication;
 import com.a.b.c.d.pangolin.tool.util.AlertUtil;
 import com.a.b.c.d.pangolin.util.ExceptionUtil;
 import com.a.b.c.d.pangolin.util.StringUtil;
@@ -13,7 +14,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.MapValueFactory;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.csv.CSVFormat;
@@ -167,7 +167,7 @@ public class CsvConvertJsonController implements Initializable {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("选择导出文件");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON文件（*.json）", "*.json"));
-        File file = fileChooser.showOpenDialog(new Stage());
+        File file = fileChooser.showOpenDialog(MainApplication.PRIMARY_STAGE);
         if (Objects.isNull(file)) {
             return;
         }

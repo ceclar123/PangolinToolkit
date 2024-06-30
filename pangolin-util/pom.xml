@@ -102,6 +102,10 @@
             <groupId>com.google.crypto.tink</groupId>
             <artifactId>tink</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.bytedeco</groupId>
+            <artifactId>opencv</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

@@ -1,12 +1,15 @@
 package com.a.b.c.d.pangolin.tool;
 
+import com.a.b.c.d.pangolin.tool.util.AlertUtil;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -38,6 +41,12 @@ public class MainApplication extends Application {
         stage.getIcons().addAll(this.getIconList());
 
         stage.show();
+
+        try {
+            System.load(MainApplication.class.getResource(getFilePath()).getFile());
+        } catch (Exception e) {
+            AlertUtil.showAlert(Alert.AlertType.ERROR, "错误", "加载opencv报错");
+        }
     }
 
     public static void main(String[] args) {
@@ -49,5 +58,18 @@ public class MainApplication extends Application {
                 .map(it -> {
                     return new Image(MainApplication.class.getResourceAsStream("/img/pangolin_" + it + ".png"));
                 }).collect(Collectors.toList());
+    }
+
+    private static String getFilePath() {
+        String osName = StringUtils.lowerCase(System.getProperty("os.name"));
+        if (osName.contains("win")) {
+            return "/lib/opencv_java490.dll";
+        } else if (osName.contains("linux")) {
+            return "/lib/libopencv_java4.so";
+        } else if (osName.contains("mac")) {
+            return "/lib/opencv_java490.dylib";
+        } else {
+            throw new UnsupportedOperationException();
+        }
     }
 }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<BorderPane fx:id="borderPane" prefHeight="600" prefWidth="800" xmlns="http://javafx.com/javafx/17.0.2-ea"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.a.b.c.d.pangolin.tool.controller.img.ImageFormatController">
+    <center>
+        <ScrollPane fx:id="scrollPane" BorderPane.alignment="CENTER">
+            <ImageView fx:id="imgFrom" BorderPane.alignment="CENTER">
+            </ImageView>
+        </ScrollPane>
+    </center>
+    <bottom>
+        <FlowPane alignment="CENTER_LEFT" prefHeight="50" prefWidth="${borderPane.width}"
+                  BorderPane.alignment="CENTER_LEFT">
+            <Button onAction="#btnSelectInputOnAction" text="选择图片"/>
+            <Button onAction="#btnExportPngOnAction" text="导出PNG"/>
+            <Button onAction="#btnExportJpgOnAction" text="导出JPG"/>
+            <Button onAction="#btnExportBmpOnAction" text="导出BMP"/>
+        </FlowPane>
+    </bottom>
+</BorderPane>

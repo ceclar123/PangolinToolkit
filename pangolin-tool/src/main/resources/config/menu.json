@@ -91,7 +91,7 @@
         "id": "m2_1",
         "name": "JSON格式化",
         "type": "MenuItem",
-        "fxml": "json/format-view.fxml"
+        "fxml": "json/json-format-view.fxml"
       },
       {
         "id": "m2_2",
@@ -151,6 +151,19 @@
         "name": "JWT",
         "type": "MenuItem",
         "fxml": "crypto/jwt-view.fxml"
+      }
+    ]
+  },
+  {
+    "id": "m4",
+    "name": "图片",
+    "type": "Menu",
+    "children": [
+      {
+        "id": "m4_1",
+        "name": "格式转换",
+        "type": "MenuItem",
+        "fxml": "img/image-format-view.fxml"
       }
     ]
   }
