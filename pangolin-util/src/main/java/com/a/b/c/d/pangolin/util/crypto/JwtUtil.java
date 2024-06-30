@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.UUID;
 
 /***
+ * https://connect2id.com/products/nimbus-jose-jwt/examples/jws-with-rsa-signature
  * <pre>
  *     JWT令牌由三个部分组成，分别是标头（Header）、有效载荷（Payload）、签名（Signature），并且由 "." 分割，类似于 xxxx.yyyy.zzzzz ，也就是 Header.Payload.Signature
  *     1、Header，标头通常由两个部分组成，分别是令牌的类型（例如 JWT）和所使用的签名算法.（例如HMAC、SHA256、RSA.  一般就是用HS256即可），Base64编码，例如：{"alg": "HS256","typ": "JWT"}
@@ -51,7 +52,7 @@ public class JwtUtil {
         return signedJWT.serialize();
     }
 
-    public static boolean serialize(String jwt, JWSVerifier verifier) throws ParseException, JOSEException {
+    public static boolean verify(String jwt, JWSVerifier verifier) throws ParseException, JOSEException {
         SignedJWT signedJWT = SignedJWT.parse(jwt);
         return signedJWT.verify(verifier);
     }

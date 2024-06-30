@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<GridPane fx:id="gridPane" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-          fx:controller="com.a.b.c.d.pangolin.tool.controller.crypto.JwtController"
-          prefHeight="600" prefWidth="800" hgap="10" vgap="10">
+<GridPane fx:id="gridPane" hgap="10" prefHeight="600" prefWidth="800" vgap="10"
+          xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="com.a.b.c.d.pangolin.tool.controller.crypto.JwtController">
     <columnConstraints>
         <ColumnConstraints prefWidth="60"/>
         <ColumnConstraints prefWidth="150"/>
-        <ColumnConstraints prefWidth="300" percentWidth="100"/>
+        <ColumnConstraints percentWidth="100" prefWidth="300"/>
     </columnConstraints>
     <rowConstraints>
         <RowConstraints prefHeight="30"/>
         <RowConstraints prefHeight="150"/>
-        <RowConstraints prefHeight="300" percentHeight="100"/>
+        <RowConstraints percentHeight="100" prefHeight="300"/>
     </rowConstraints>
     <!-- 第1行 -->
-    <Label text="签名算法：" prefWidth="60" minWidth="60" maxWidth="60" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+    <Label maxWidth="60" minWidth="60" prefWidth="60" text="签名算法：" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
     <ComboBox fx:id="cmbSignAlgorithm" prefWidth="150" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
     <Button onAction="#btnGenKeyOnAction" text="生成密钥" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
     <!-- 第2行 -->
@@ -34,25 +35,63 @@
         </SplitPane>
     </StackPane>
     <!-- 第3行 -->
-    <GridPane fx:id="gridPaneContent" prefWidth="${gridPane.width}"
-              GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="2">
+    <GridPane fx:id="gridPaneContent" prefWidth="${gridPane.width}" GridPane.columnIndex="0" GridPane.columnSpan="3"
+              GridPane.rowIndex="2">
         <columnConstraints>
-            <ColumnConstraints prefWidth="200" percentWidth="50"/>
+            <ColumnConstraints percentWidth="50" prefWidth="200"/>
             <ColumnConstraints prefWidth="100"/>
-            <ColumnConstraints prefWidth="200" percentWidth="50"/>
+            <ColumnConstraints percentWidth="50" prefWidth="200"/>
         </columnConstraints>
         <rowConstraints>
             <RowConstraints/>
         </rowConstraints>
         <TitledPane alignment="TOP_LEFT" collapsible="false" text="Payload" GridPane.columnIndex="0"
                     GridPane.rowIndex="0">
-            <TextArea fx:id="txtPayload" minWidth="100" prefHeight="${gridPaneContent.height}" wrapText="true"/>
+            <GridPane fx:id="gridClaims" hgap="5" vgap="5">
+                <padding>
+                    <Insets bottom="5" left="5" right="5" top="5"/>
+                </padding>
+                <columnConstraints>
+                    <ColumnConstraints prefWidth="100"/>
+                    <ColumnConstraints percentWidth="100" prefWidth="100"/>
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints prefHeight="30"/>
+                    <RowConstraints prefHeight="30"/>
+                    <RowConstraints prefHeight="30"/>
+                    <RowConstraints prefHeight="30"/>
+                    <RowConstraints prefHeight="30"/>
+                    <RowConstraints prefHeight="30"/>
+                    <RowConstraints prefHeight="100"/>
+                    <RowConstraints percentHeight="100" prefHeight="100"/>
+                </rowConstraints>
+                <Label text="jwtID:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                <TextField fx:id="txtJwtID" prefWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                <Label text="issuer:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                <TextField fx:id="txtIssuer" prefWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                <Label text="issueTime:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                <TextField fx:id="txtIssueTime" prefWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                <Label text="notBeforeTime:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                <TextField fx:id="txtNotBeforeTime" prefWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+                <Label text="expirationTime:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+                <TextField fx:id="txtExpirationTime" prefWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
+                <Label text="audience:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+                <TextField fx:id="txtAudience" prefWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+
+                <Label text="subject:" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+                <TextArea fx:id="txtSubject" prefWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+            </GridPane>
         </TitledPane>
-        <FlowPane fx:id="flowPane" alignment="CENTER" orientation="VERTICAL" maxWidth="100" minWidth="100"
-                  prefWidth="100" GridPane.columnIndex="1" GridPane.rowIndex="0" vgap="10">
-            <Button onAction="#btnEncryptOnAction" text="加密" prefWidth="${flowPane.width}"/>
-            <Button onAction="#btnDecryptOnAction" text="解密" prefWidth="${flowPane.width}"/>
-            <Button onAction="#btnVerifyOnAction" text="验签" prefWidth="${flowPane.width}"/>
+        <FlowPane fx:id="flowPane" alignment="CENTER" maxWidth="100" minWidth="100" orientation="VERTICAL"
+                  prefWidth="100" vgap="10" GridPane.columnIndex="1" GridPane.rowIndex="0">
+            <Button onAction="#btnEncryptOnAction" prefWidth="${flowPane.width}" text="加密"/>
+            <Button onAction="#btnDecryptOnAction" prefWidth="${flowPane.width}" text="解密"/>
+            <Button onAction="#btnVerifyOnAction" prefWidth="${flowPane.width}" text="验签"/>
         </FlowPane>
         <TitledPane collapsible="false" text="Token" GridPane.columnIndex="2" GridPane.rowIndex="0">
             <TextArea fx:id="txtToken" minWidth="100" prefHeight="${gridPaneContent.height}" wrapText="true"/>

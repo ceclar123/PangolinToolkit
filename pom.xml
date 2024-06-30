@@ -164,6 +164,12 @@
                 <artifactId>nimbus-jose-jwt</artifactId>
                 <version>9.40</version>
             </dependency>
+            <!-- jwt中的EdDSA需要 -->
+            <dependency>
+                <groupId>com.google.crypto.tink</groupId>
+                <artifactId>tink</artifactId>
+                <version>1.13.0</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <build>
