@@ -140,11 +140,11 @@ public class JwtController implements Initializable {
         GridPaneUtil.setAutoPercentWidth(this.gridPane);
         GridPaneUtil.setAutoPercentHeight(this.gridPane);
 
-        // gridClaims
-        GridPaneUtil.setAutoPercentWidth(this.gridClaims);
-
         // gridPaneContent宽高自适应
         GridPaneUtil.setAutoPercentWidth(this.gridPaneContent);
+
+        // gridClaims
+        GridPaneUtil.setAutoPercentWidth(this.gridClaims);
     }
 
     public void btnGenKeyOnAction(ActionEvent event) {

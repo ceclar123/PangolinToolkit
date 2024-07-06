@@ -47,7 +47,7 @@
         </rowConstraints>
         <TitledPane alignment="TOP_LEFT" collapsible="false" text="Payload" GridPane.columnIndex="0"
                     GridPane.rowIndex="0">
-            <GridPane fx:id="gridClaims" hgap="5" vgap="5">
+            <GridPane fx:id="gridClaims" hgap="5" vgap="5" minWidth="100" prefHeight="${gridPaneContent.height}">
                 <padding>
                     <Insets bottom="5" left="5" right="5" top="5"/>
                 </padding>
